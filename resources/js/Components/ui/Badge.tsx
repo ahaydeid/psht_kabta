@@ -3,7 +3,8 @@ import type { HTMLAttributes } from 'react';
 import { cn } from '@/lib/cn';
 
 export type BadgeProps = HTMLAttributes<HTMLSpanElement> & {
-    variant?: 'default' | 'secondary' | 'destructive' | 'outline' | 'success' | 'warning' | 'info';
+    size?: 'sm' | 'md' | 'lg';
+    variant?: 'default' | 'secondary' | 'destructive' | 'outline' | 'success' | 'warning' | 'info' | 'unstyled';
 };
 
 const variants = {
@@ -14,14 +15,22 @@ const variants = {
     success: 'border-emerald-500 bg-emerald-500 text-white',
     warning: 'border-brand-yellow bg-brand-yellow text-brand-black',
     info: 'border-zinc-700 bg-zinc-700 text-white',
+    unstyled: '',
 };
 
-export function Badge({ className = '', variant = 'default', ...props }: BadgeProps) {
+const sizes = {
+    sm: 'px-2 py-0.5 text-[11px] font-semibold',
+    md: 'px-2.5 py-1 text-xs font-medium',
+    lg: 'px-3 py-1.5 text-sm font-medium',
+};
+
+export function Badge({ className = '', size = 'md', variant = 'default', ...props }: BadgeProps) {
     return (
         <span
             className={cn(
-                'inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-medium tracking-tight transition-colors',
+                'inline-flex items-center rounded-full border tracking-tight transition-colors',
                 variants[variant],
+                sizes[size],
                 className,
             )}
             {...props}

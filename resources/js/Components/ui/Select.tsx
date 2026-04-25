@@ -3,15 +3,16 @@ import type { SelectHTMLAttributes } from 'react';
 import { cn } from '@/lib/cn';
 
 export type SelectProps = SelectHTMLAttributes<HTMLSelectElement> & {
+    containerClassName?: string;
     error?: string;
     label?: string;
 };
 
-export function Select({ children, className = '', error, id, label, ...props }: SelectProps) {
+export function Select({ children, className = '', containerClassName = '', error, id, label, ...props }: SelectProps) {
     const selectId = id ?? props.name;
 
     return (
-        <div className="w-full space-y-1.5 text-left">
+        <div className={cn('w-full space-y-1.5 text-left', containerClassName)}>
             {label ? (
                 <label className="ml-0.5 block text-xs font-medium text-zinc-700" htmlFor={selectId}>
                     {label}

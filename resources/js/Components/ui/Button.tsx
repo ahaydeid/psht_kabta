@@ -3,8 +3,8 @@ import { Loader2 } from 'lucide-react';
 
 import { cn } from '@/lib/cn';
 
-type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'warning' | 'ghost' | 'link' | 'success' | 'outline';
-type ButtonSize = 'sm' | 'md' | 'lg';
+type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'warning' | 'ghost' | 'link' | 'success' | 'info' | 'outline';
+type ButtonSize = 'sm' | 'md' | 'lg' | 'xl';
 
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
     icon?: ReactNode;
@@ -21,13 +21,15 @@ const variants: Record<ButtonVariant, string> = {
     ghost: 'bg-transparent text-zinc-700 hover:bg-zinc-100',
     link: 'h-auto bg-transparent p-0 text-brand-red hover:underline',
     success: 'bg-emerald-600 text-white hover:bg-emerald-700',
+    info: 'bg-sky-600 text-white hover:bg-sky-700',
     outline: 'border border-zinc-300 bg-white text-zinc-800 hover:bg-zinc-50',
 };
 
 const sizes: Record<ButtonSize, string> = {
     sm: 'rounded px-3 py-1.5 text-xs',
     md: 'rounded px-4 py-2 text-sm',
-    lg: 'rounded px-8 py-3 text-base',
+    lg: 'rounded px-5 py-2.5 text-sm',
+    xl: 'rounded-lg px-8 py-3',
 };
 
 export function Button({

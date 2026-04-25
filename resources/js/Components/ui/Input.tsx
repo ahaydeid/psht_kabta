@@ -6,6 +6,7 @@ export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
     containerClassName?: string;
     error?: string;
     label?: string;
+    requiredNote?: string;
     variant?: 'underlined' | 'box';
 };
 
@@ -20,6 +21,7 @@ export function Input({
     error,
     id,
     label,
+    requiredNote,
     variant = 'box',
     ...props
 }: InputProps) {
@@ -28,12 +30,15 @@ export function Input({
     return (
         <div className={cn('w-full space-y-1.5', containerClassName)}>
             {label ? (
-                <label
-                    className={cn('ml-0.5 block text-xs font-medium text-zinc-700', error ? 'text-brand-red' : '')}
-                    htmlFor={inputId}
-                >
-                    {label}
-                </label>
+                <div className="flex items-center justify-between gap-3">
+                    <label
+                        className={cn('ml-0.5 block text-xs font-medium text-zinc-700', error ? 'text-brand-red' : '')}
+                        htmlFor={inputId}
+                    >
+                        {label}
+                    </label>
+                    {requiredNote ? <span className="shrink-0 text-xs italic text-rose-600">{requiredNote}</span> : null}
+                </div>
             ) : null}
             <input
                 className={cn(

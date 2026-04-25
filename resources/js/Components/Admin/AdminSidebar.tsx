@@ -2,8 +2,7 @@ import { Link, usePage } from '@inertiajs/react';
 import { ChevronDown, ChevronRight, ChevronsLeftIcon, Menu } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
-import { Button } from '@/Components/ui';
-import { adminMenu } from '@/config/adminMenu';
+import { buildAdminMenu } from '@/config/adminMenu';
 import type { MenuItem } from '@/types/Menu';
 import { cn } from '@/lib/cn';
 
@@ -24,6 +23,10 @@ function collectPaths(items: MenuItem[]): string[] {
 function containsActivePath(item: MenuItem, activePath?: string): boolean {
     if (!activePath) {
         return false;
+    }
+
+    if (item.path === '/' && (activePath === '/' || activePath.startsWith('/admin/dashboard/'))) {
+        return true;
     }
 
     if (item.path === activePath) {
@@ -58,21 +61,39 @@ function findAncestorKeys(items: MenuItem[], activePath?: string, ancestors: str
 }
 
 export function AdminSidebar({ isMobileOpen = false, isOpen, onCloseMobile, onToggle }: AdminSidebarProps) {
-    const { url } = usePage();
+    const { props, url } = usePage<{
+        auth?: {
+            access?: {
+                allowedDashboardScopes?: string[];
+                allowedSettingScopes?: string[];
+                canViewRolePermission?: boolean;
+                canViewUserManagement?: boolean;
+                defaultDashboardScope?: string;
+                permissions?: string[];
+            };
+        };
+    }>();
     const [openDropdowns, setOpenDropdowns] = useState<string[]>([]);
+    const menuItems = useMemo(() => buildAdminMenu(props.auth?.access ?? {}), [props.auth?.access]);
 
-    const allPaths = useMemo(() => collectPaths(adminMenu), []);
+    const allPaths = useMemo(() => collectPaths(menuItems), [menuItems]);
     const activePath = useMemo(
         () =>
             allPaths
-                .filter((path) => url === path || url.startsWith(`${path}/`) || url.startsWith(`${path}?`))
+                .filter((path) => {
+                    if (path === '/') {
+                        return url === '/' || url.startsWith('/admin/dashboard/');
+                    }
+
+                    return url === path || url.startsWith(`${path}/`) || url.startsWith(`${path}?`);
+                })
                 .sort((a, b) => b.length - a.length)[0],
         [allPaths, url],
     );
 
     useEffect(() => {
-        setOpenDropdowns(findAncestorKeys(adminMenu, activePath));
-    }, [activePath]);
+        setOpenDropdowns(findAncestorKeys(menuItems, activePath));
+    }, [activePath, menuItems]);
 
     const toggleDropdown = (key: string) => {
         setOpenDropdowns((current) => (current.includes(key) ? current.filter((item) => item !== key) : [...current, key]));
@@ -99,7 +120,7 @@ export function AdminSidebar({ isMobileOpen = false, isOpen, onCloseMobile, onTo
             const active = containsActivePath(item, activePath);
             const open = openDropdowns.includes(key);
             const padding = level === 1 ? 'px-3 py-3 pl-5' : 'py-2 pl-10 pr-3';
-            const activeClass = level === 1 ? 'bg-brand-yellow text-brand-black font-semibold' : 'font-semibold text-brand-red';
+            const activeClass = level === 1 ? 'bg-brand-yellow text-slate-700 font-normal' : 'font-bold text-slate-700';
             const inactiveClass = 'text-zinc-700 hover:bg-brand-yellow/10';
 
             const icon = Icon && level === 1 ? (
@@ -115,15 +136,15 @@ export function AdminSidebar({ isMobileOpen = false, isOpen, onCloseMobile, onTo
             if (hasChildren) {
                 return (
                     <div key={key}>
-                        <Button
+                        <button
                             className={cn(
-                                'flex w-full gap-3 rounded-none font-normal',
+                                'flex w-full cursor-pointer items-center gap-3 text-sm transition',
                                 padding,
                                 isOpen || isMobileOpen ? 'justify-start' : 'justify-center',
                                 active ? activeClass : inactiveClass,
                             )}
                             onClick={() => toggleDropdown(key)}
-                            variant="ghost"
+                            type="button"
                         >
                             {icon}
                             {(isOpen || isMobileOpen) ? (
@@ -132,7 +153,7 @@ export function AdminSidebar({ isMobileOpen = false, isOpen, onCloseMobile, onTo
                                     {open ? <ChevronDown className="size-4 shrink-0" /> : <ChevronRight className="size-4 shrink-0" />}
                                 </div>
                             ) : null}
-                        </Button>
+                        </button>
 
                         {open && (isOpen || isMobileOpen) ? <div className="ml-4">{renderMenu(item.children!, level + 1)}</div> : null}
                     </div>
@@ -177,8 +198,8 @@ export function AdminSidebar({ isMobileOpen = false, isOpen, onCloseMobile, onTo
                         </h1>
                     </div>
                 ) : null}
-                <Button
-                    className="rounded-full p-2"
+                <button
+                    className="cursor-pointer rounded-full p-2 hover:bg-zinc-100"
                     onClick={() => {
                         if (isMobileOpen && onCloseMobile) {
                             onCloseMobile();
@@ -187,20 +208,20 @@ export function AdminSidebar({ isMobileOpen = false, isOpen, onCloseMobile, onTo
 
                         onToggle();
                     }}
-                    variant="ghost"
+                    type="button"
                 >
                     <span className="lg:hidden">
                         <ChevronsLeftIcon size={18} />
                     </span>
                     <span className="hidden lg:block">{isOpen ? <ChevronsLeftIcon size={18} /> : <Menu size={18} />}</span>
-                </Button>
+                </button>
             </div>
 
             <div className="shrink-0">
                 <div className="mx-auto h-px w-[60%] bg-zinc-200" />
             </div>
 
-            <nav className="flex-1 overflow-y-auto pt-3">{renderMenu(adminMenu)}</nav>
+            <nav className="flex-1 overflow-y-auto pt-3">{renderMenu(menuItems)}</nav>
 
             <div className="sticky bottom-0 border-t border-zinc-200 bg-white p-3">
                 <h3 className="text-xs text-zinc-400">Sisfo PSHT Kabta</h3>
