@@ -250,16 +250,6 @@ export default function AdminMasterDataSiswaIndex({
             key: 'age',
         },
         {
-            cell: (row) => <div className="w-40 truncate">{row.nik}</div>,
-            header: 'NIK',
-            key: 'nik',
-        },
-        {
-            cell: (row) => <div className="w-32 truncate">{row.phone}</div>,
-            header: 'No. HP',
-            key: 'phone',
-        },
-        {
             cell: (row) => <div className="w-40 truncate">{row.trainingUnit}</div>,
             header: 'Unit Latihan',
             key: 'trainingUnit',
@@ -289,12 +279,6 @@ export default function AdminMasterDataSiswaIndex({
                 ),
             header: 'Status',
             key: 'status',
-        },
-        {
-            cell: (row) => <div className="w-44 truncate text-sm text-zinc-600">{row.address}</div>,
-            header: 'Alamat',
-            key: 'address',
-            searchable: false,
         },
         {
             cell: (row) => (
