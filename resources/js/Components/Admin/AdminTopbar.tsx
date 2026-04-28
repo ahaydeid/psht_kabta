@@ -46,7 +46,7 @@ export function AdminTopbar({ onMenuClick }: AdminTopbarProps) {
         setIsProfileOpen(false);
 
         const result = await confirmAction({
-            title: 'Keluar dari sistem?',
+            title: 'Keluar dari aplikasi?',
             text: 'Sesi login akan diakhiri dan kamu perlu masuk kembali.',
             confirmButtonText: 'Ya, keluar',
             cancelButtonText: 'Batal',
