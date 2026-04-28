@@ -239,7 +239,7 @@ export default function AdminMasterDataSiswaShow({
                 </div>
 
                 <div className="student-detail-layout">
-                    <div className="space-y-3">
+                    <div>
                         <aside className="w-full rounded border border-zinc-200 bg-white p-4">
                             <div className="student-profile-media">
                                 <div
@@ -283,123 +283,122 @@ export default function AdminMasterDataSiswaShow({
                                 </div>
                             </div>
                         </aside>
-                        <div
-                            className={`grid grid-cols-1 gap-2 ${
-                                canDeleteStudent ? "sm:grid-cols-2" : ""
-                            }`}
-                        >
+                    </div>
+
+                    <div className="min-w-0 space-y-3">
+                        <section className="student-detail-card rounded border border-zinc-200 bg-white">
+                            <DetailSection title="Data Diri Siswa">
+                                <div className="student-detail-grid">
+                                    <DetailItem
+                                        label="Kewarganegaraan"
+                                        value={student.citizenship}
+                                    />
+                                    <DetailItem
+                                        label="Nomor Identitas (KTP/KK)"
+                                        value={student.identityNumber}
+                                    />
+                                    <DetailItem
+                                        label="Tempat Lahir"
+                                        value={student.birthPlace}
+                                    />
+                                    <DetailItem
+                                        label="Tanggal Lahir"
+                                        value={student.birthDate}
+                                    />
+                                    <DetailItem
+                                        label="Jenis Kelamin"
+                                        value={student.gender}
+                                    />
+                                    <DetailItem
+                                        label="Agama"
+                                        value={student.religion}
+                                    />
+                                </div>
+                            </DetailSection>
+
+                            <DetailSection title="Kontak & Wali">
+                                <div className="student-detail-grid student-detail-grid--contact">
+                                    <DetailItem
+                                        label="Alamat Lengkap"
+                                        value={student.address}
+                                    />
+                                    <DetailItem
+                                        label="Pekerjaan"
+                                        value={student.occupation}
+                                    />
+                                    <DetailItem
+                                        label="No HP / WA"
+                                        value={
+                                            student.phone
+                                                ? `+62${student.phone}`
+                                                : null
+                                        }
+                                    />
+                                    <DetailItem
+                                        label="Nama Ayah / Wali"
+                                        value={student.fatherOrGuardianName}
+                                    />
+                                </div>
+                            </DetailSection>
+
+                            <DetailSection title="Data Keanggotaan">
+                                <div className="student-detail-grid">
+                                    <DetailBadgeItem label="Unit Latihan">
+                                        <Badge
+                                            className="rounded-none border-zinc-700 bg-zinc-700 px-2.5 py-1 text-sm font-semibold text-white"
+                                            variant="unstyled"
+                                        >
+                                            {emptyValue(student.trainingUnit)}
+                                        </Badge>
+                                    </DetailBadgeItem>
+                                    {shouldShowRanting ? (
+                                        <DetailItem
+                                            label="Ranting"
+                                            value={student.ranting}
+                                        />
+                                    ) : null}
+                                    <DetailItem
+                                        label="Tanggal Gabung"
+                                        value={student.joinedAt}
+                                    />
+                                    <DetailBadgeItem label="Status Siswa">
+                                        <Badge
+                                            className="justify-center border-0"
+                                            size="sm"
+                                            variant={statusBadgeVariant(
+                                                student.status,
+                                            )}
+                                        >
+                                            {statusLabel(student.status)}
+                                        </Badge>
+                                    </DetailBadgeItem>
+                                </div>
+                            </DetailSection>
+                        </section>
+
+                        <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
                             {canDeleteStudent ? (
                                 <Button
-                                    className="w-full rounded-full"
+                                    className="w-full rounded-full hover:!border-brand-red hover:!bg-brand-red hover:!text-white sm:w-40"
                                     icon={<Trash2 className="h-4 w-4" />}
                                     onClick={handleDeleteStudent}
                                     size="md"
-                                    variant="danger"
+                                    variant="outline"
                                 >
                                     Hapus
                                 </Button>
                             ) : null}
                             <Button
-                                className="w-full rounded-full"
+                                className="w-full rounded-full hover:!border-brand-yellow hover:!bg-brand-yellow hover:!text-brand-black sm:w-40"
                                 icon={<Pencil className="h-4 w-4" />}
                                 onClick={() => setIsEditOpen(true)}
                                 size="md"
-                                variant="primary"
+                                variant="outline"
                             >
                                 Edit
                             </Button>
                         </div>
                     </div>
-
-                    <section className="student-detail-card min-w-0 rounded border border-zinc-200 bg-white">
-                        <DetailSection title="Data Diri Siswa">
-                            <div className="student-detail-grid">
-                                <DetailItem
-                                    label="Kewarganegaraan"
-                                    value={student.citizenship}
-                                />
-                                <DetailItem
-                                    label="Nomor Identitas (KTP/KK)"
-                                    value={student.identityNumber}
-                                />
-                                <DetailItem
-                                    label="Tempat Lahir"
-                                    value={student.birthPlace}
-                                />
-                                <DetailItem
-                                    label="Tanggal Lahir"
-                                    value={student.birthDate}
-                                />
-                                <DetailItem
-                                    label="Jenis Kelamin"
-                                    value={student.gender}
-                                />
-                                <DetailItem
-                                    label="Agama"
-                                    value={student.religion}
-                                />
-                            </div>
-                        </DetailSection>
-
-                        <DetailSection title="Kontak & Wali">
-                            <div className="student-detail-grid student-detail-grid--contact">
-                                <DetailItem
-                                    label="Alamat Lengkap"
-                                    value={student.address}
-                                />
-                                <DetailItem
-                                    label="Pekerjaan"
-                                    value={student.occupation}
-                                />
-                                <DetailItem
-                                    label="No HP / WA"
-                                    value={
-                                        student.phone
-                                            ? `+62${student.phone}`
-                                            : null
-                                    }
-                                />
-                                <DetailItem
-                                    label="Nama Ayah / Wali"
-                                    value={student.fatherOrGuardianName}
-                                />
-                            </div>
-                        </DetailSection>
-
-                        <DetailSection title="Data Keanggotaan">
-                            <div className="student-detail-grid">
-                                <DetailBadgeItem label="Unit Latihan">
-                                    <Badge
-                                        className="rounded-none border-zinc-700 bg-zinc-700 px-2.5 py-1 text-sm font-semibold text-white"
-                                        variant="unstyled"
-                                    >
-                                        {emptyValue(student.trainingUnit)}
-                                    </Badge>
-                                </DetailBadgeItem>
-                                {shouldShowRanting ? (
-                                    <DetailItem
-                                        label="Ranting"
-                                        value={student.ranting}
-                                    />
-                                ) : null}
-                                <DetailItem
-                                    label="Tanggal Gabung"
-                                    value={student.joinedAt}
-                                />
-                                <DetailBadgeItem label="Status Siswa">
-                                    <Badge
-                                        className="justify-center border-0"
-                                        size="sm"
-                                        variant={statusBadgeVariant(
-                                            student.status,
-                                        )}
-                                    >
-                                        {statusLabel(student.status)}
-                                    </Badge>
-                                </DetailBadgeItem>
-                            </div>
-                        </DetailSection>
-                    </section>
                 </div>
             </div>
 

@@ -49,7 +49,7 @@ export default function LoginPage() {
                                         Username
                                     </label>
                                     <div className="relative">
-                                        <div className="pointer-events-none absolute top-2.5 left-0 flex h-5 w-5 items-center justify-center text-slate-300">
+                                        <div className="pointer-events-none absolute top-2.5 left-0 flex h-5 w-5 items-center justify-center text-slate-200">
                                             <User2 className="h-5 w-5" />
                                         </div>
                                         <Input
@@ -59,7 +59,7 @@ export default function LoginPage() {
                                             id="username"
                                             name="username"
                                             onChange={(event) => form.setData('username', event.target.value)}
-                                            placeholder="admin.pusat"
+                                            // placeholder="admin.pusat"
                                             value={form.data.username}
                                             variant="underlined"
                                         />
@@ -71,7 +71,7 @@ export default function LoginPage() {
                                         Password
                                     </label>
                                     <div className="relative">
-                                        <div className="pointer-events-none absolute top-2.5 left-0 flex h-5 w-5 items-center justify-center text-slate-300">
+                                        <div className="pointer-events-none absolute top-2.5 left-0 flex h-5 w-5 items-center justify-center text-slate-200">
                                             <LockKeyhole className="h-5 w-5" />
                                         </div>
                                         <Input
