@@ -1,46 +1,41 @@
-import { Head, router, usePage } from "@inertiajs/react";
-import { ChevronLeft, Pencil, Trash2, UserRound } from "lucide-react";
-import Swal from "sweetalert2";
-import { useState, type ReactNode } from "react";
+import { Head, router, usePage } from '@inertiajs/react';
+import { ChevronLeft, Pencil, Trash2, UserRound } from 'lucide-react';
+import { useState, type ReactNode } from 'react';
+import Swal from 'sweetalert2';
 
-import { Badge, Button } from "@/Components/ui";
-import { AdminLayout } from "@/Layouts/AdminLayout";
-import { showToast } from "@/lib/alert";
-import { StudentFormModal, type TrainingUnitOption } from "./StudentFormModal";
+import { Badge, Button } from '@/Components/ui';
+import { AdminLayout } from '@/Layouts/AdminLayout';
+import { showToast } from '@/lib/alert';
+import { MemberFormModal, type MemberCitizenship, type MemberGender, type MemberStatus, type OrganizationUnitOption } from './MemberFormModal';
 
-type StudentStatus = "active" | "inactive" | "graduated" | "transferred";
-type StudentBelt = "Polos" | "Jambon" | "Hijau" | "Putih";
-type StudentCitizenship = "WNI" | "WNA";
-type StudentGender = "Laki-laki" | "Perempuan";
-
-type StudentDetail = {
+type MemberDetail = {
     address: null | string;
-    belt: StudentBelt;
     birthDate: string;
     birthDateValue: string;
     birthPlace: null | string;
-    citizenship: StudentCitizenship;
-    fatherOrGuardianName: null | string;
-    gender: StudentGender;
+    citizenship: MemberCitizenship;
+    gender: MemberGender;
     id: number;
-    identityNumber: string;
-    identityType: "KTP/KK";
-    joinedAt: string;
-    joinedAtValue: string;
+    identityNumber: null | string;
+    identityType: 'KTP/KK';
+    legalizationPlace: null | string;
+    legalizedAt: string;
+    legalizedAtValue: string;
+    memberNumber: string;
     name: string;
     occupation: null | string;
+    organizationUnit: string;
     organizationUnitId: number;
     phone: null | string;
     photoUrl?: null | string;
     ranting: string;
     religion: null | string;
-    status: StudentStatus;
-    trainingUnit: string;
+    status: MemberStatus;
 };
 
-type AdminMasterDataSiswaShowProps = {
-    student: StudentDetail;
-    trainingUnitOptions: TrainingUnitOption[];
+type AdminMasterDataWargaShowProps = {
+    member: MemberDetail;
+    organizationUnitOptions: OrganizationUnitOption[];
 };
 
 type SharedPageProps = {
@@ -53,53 +48,38 @@ type SharedPageProps = {
     };
 };
 
-function statusBadgeVariant(status: StudentStatus) {
+function statusBadgeVariant(status: MemberStatus) {
     switch (status) {
-        case "active":
-            return "success";
-        case "inactive":
-            return "secondary";
-        case "graduated":
-            return "info";
-        case "transferred":
-            return "outline";
+        case 'active':
+            return 'success';
+        case 'inactive':
+            return 'secondary';
+        case 'transferred':
+            return 'outline';
+        case 'deceased':
+            return 'destructive';
         default:
-            return "secondary";
+            return 'secondary';
     }
 }
 
-function statusLabel(status: StudentStatus) {
+function statusLabel(status: MemberStatus) {
     switch (status) {
-        case "active":
-            return "Aktif";
-        case "inactive":
-            return "Tidak Aktif";
-        case "graduated":
-            return "Lulus / Warga";
-        case "transferred":
-            return "Pindah";
+        case 'active':
+            return 'Aktif';
+        case 'inactive':
+            return 'Tidak Aktif';
+        case 'transferred':
+            return 'Pindah';
+        case 'deceased':
+            return 'Meninggal';
         default:
             return status;
     }
 }
 
-function beltClassName(belt: StudentBelt) {
-    switch (belt) {
-        case "Polos":
-            return "border-brand-black bg-brand-black text-white";
-        case "Jambon":
-            return "border-pink-500 bg-pink-500 text-white";
-        case "Hijau":
-            return "border-green-600 bg-green-600 text-white";
-        case "Putih":
-            return "border-slate-200 bg-white text-brand-black";
-        default:
-            return "border-zinc-200 bg-white text-brand-black";
-    }
-}
-
 function emptyValue(value?: null | string) {
-    return value && value.trim() ? value : "-";
+    return value && value.trim() ? value : '-';
 }
 
 function DetailItem({
@@ -136,7 +116,7 @@ function DetailBadgeItem({
 
 function DetailSection({
     children,
-    className = "",
+    className = '',
     title,
 }: {
     children: ReactNode;
@@ -153,52 +133,52 @@ function DetailSection({
     );
 }
 
-export default function AdminMasterDataSiswaShow({
-    student,
-    trainingUnitOptions = [],
-}: AdminMasterDataSiswaShowProps) {
+export default function AdminMasterDataWargaShow({
+    member,
+    organizationUnitOptions = [],
+}: AdminMasterDataWargaShowProps) {
     const { auth } = usePage<SharedPageProps>().props;
     const [isEditOpen, setIsEditOpen] = useState(false);
-    const shouldShowRanting = auth?.organizationUnit?.type !== "ranting";
-    const canDeleteStudent =
-        (auth?.permissions?.includes("student.delete") ?? false) ||
+    const shouldShowRanting = auth?.organizationUnit?.type !== 'ranting';
+    const canDeleteMember =
+        (auth?.permissions?.includes('member.delete') ?? false) ||
         (auth?.roles?.some((role) =>
             [
-                "super_admin",
-                "admin_pusat",
-                "admin_cabang",
-                "admin_ranting",
-                "admin_rayon",
-                "admin_sub_rayon",
-                "admin_komisariat",
+                'super_admin',
+                'admin_pusat',
+                'admin_cabang',
+                'admin_ranting',
+                'admin_rayon',
+                'admin_sub_rayon',
+                'admin_komisariat',
             ].includes(role),
         ) ??
             false);
 
-    const handleDeleteStudent = async () => {
+    const handleDeleteMember = async () => {
         const result = await Swal.fire({
-            title: "Hapus siswa ini?",
-            text: `Ketik nama siswa persis seperti "${student.name}" untuk melanjutkan.`,
-            input: "text",
-            inputLabel: "Nama siswa",
-            inputPlaceholder: student.name,
-            icon: "warning",
+            title: 'Hapus warga ini?',
+            text: `Ketik nama warga persis seperti "${member.name}" untuk melanjutkan.`,
+            input: 'text',
+            inputLabel: 'Nama warga',
+            inputPlaceholder: member.name,
+            icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: "Ya, hapus",
-            cancelButtonText: "Batal",
+            confirmButtonText: 'Ya, hapus',
+            cancelButtonText: 'Batal',
             reverseButtons: true,
-            confirmButtonColor: "#dc2626",
-            cancelButtonColor: "#e4e4e7",
+            confirmButtonColor: '#dc2626',
+            cancelButtonColor: '#e4e4e7',
             customClass: {
-                title: "text-2xl!",
-                confirmButton: "text-white!",
-                cancelButton: "text-zinc-700!",
-                input: "rounded! border! border-zinc-300! px-3! py-2! text-sm! text-zinc-800! focus:border-brand-yellow-dark! focus:ring-1! focus:ring-brand-yellow/30!",
-                inputLabel: "text-sm! font-medium! text-zinc-700!",
+                title: 'text-2xl!',
+                confirmButton: 'text-white!',
+                cancelButton: 'text-zinc-700!',
+                input: 'rounded! border! border-zinc-300! px-3! py-2! text-sm! text-zinc-800! focus:border-brand-yellow-dark! focus:ring-1! focus:ring-brand-yellow/30!',
+                inputLabel: 'text-sm! font-medium! text-zinc-700!',
             },
             inputValidator: (value) => {
-                if (value.trim() !== student.name.trim()) {
-                    return "Nama siswa tidak cocok.";
+                if (value.trim() !== member.name.trim()) {
+                    return 'Nama warga tidak cocok.';
                 }
 
                 return undefined;
@@ -209,31 +189,31 @@ export default function AdminMasterDataSiswaShow({
             return;
         }
 
-        router.delete(`/admin/master-data/siswa/${student.id}`, {
+        router.delete(`/admin/master-data/warga/${member.id}`, {
             preserveScroll: true,
             onSuccess: () => {
-                showToast({ title: "Data siswa berhasil dihapus." });
+                showToast({ title: 'Data warga berhasil dihapus.' });
             },
         });
     };
 
     return (
         <AdminLayout>
-            <Head title={`Detail Siswa - ${student.name}`} />
+            <Head title={`Detail Warga - ${member.name}`} />
 
             <div className="space-y-4">
                 <div className="flex items-center gap-3">
                     <button
-                        aria-label="Kembali ke daftar siswa"
+                        aria-label="Kembali ke daftar warga"
                         className="inline-flex size-8 cursor-pointer items-center justify-center rounded-full border border-transparent text-zinc-700 transition hover:border-slate-100 hover:bg-white hover:text-brand-black"
-                        onClick={() => router.visit("/admin/master-data/siswa")}
+                        onClick={() => router.visit('/admin/master-data/warga')}
                         type="button"
                     >
                         <ChevronLeft className="h-5 w-5" />
                     </button>
                     <div>
                         <h2 className="text-xl font-bold text-zinc-800">
-                            Detail Siswa
+                            Detail Warga
                         </h2>
                     </div>
                 </div>
@@ -244,13 +224,13 @@ export default function AdminMasterDataSiswaShow({
                             <div className="student-profile-media">
                                 <div
                                     className="overflow-hidden rounded bg-zinc-100"
-                                    style={{ aspectRatio: "3 / 4" }}
+                                    style={{ aspectRatio: '3 / 4' }}
                                 >
-                                    {student.photoUrl ? (
+                                    {member.photoUrl ? (
                                         <img
-                                            alt={student.name}
+                                            alt={member.name}
                                             className="h-full w-full object-cover"
-                                            src={student.photoUrl}
+                                            src={member.photoUrl}
                                         />
                                     ) : (
                                         <div className="flex h-full w-full items-center justify-center text-zinc-400">
@@ -258,14 +238,12 @@ export default function AdminMasterDataSiswaShow({
                                         </div>
                                     )}
                                 </div>
-                                <div
-                                    className={`flex items-center justify-center overflow-hidden border text-xl font-bold uppercase tracking-wide ${beltClassName(student.belt)}`}
-                                >
+                                <div className="flex items-center justify-center overflow-hidden border border-zinc-900 bg-zinc-900 text-xl font-bold uppercase tracking-wide text-white">
                                     <span
                                         className="whitespace-nowrap"
-                                        style={{ transform: "rotate(90deg)" }}
+                                        style={{ transform: 'rotate(90deg)' }}
                                     >
-                                        {student.belt}
+                                        Warga
                                     </span>
                                 </div>
                             </div>
@@ -273,13 +251,16 @@ export default function AdminMasterDataSiswaShow({
                             <div
                                 className="mt-4 grid"
                                 style={{
-                                    gridTemplateColumns: "minmax(0, 1fr) 2.4rem",
+                                    gridTemplateColumns: 'minmax(0, 1fr) 2.4rem',
                                 }}
                             >
                                 <div className="text-center">
-                                    <span className="text-lg font-bold leading-tight text-sky-900">
-                                        {student.name}
+                                    <span className="text-lg font-bold leading-tight text-zinc-900">
+                                        {member.name}
                                     </span>
+                                    <div className="mt-1 text-sm font-semibold text-zinc-500">
+                                        {member.memberNumber}
+                                    </div>
                                 </div>
                             </div>
                         </aside>
@@ -287,89 +268,93 @@ export default function AdminMasterDataSiswaShow({
 
                     <div className="min-w-0 space-y-3">
                         <section className="student-detail-card rounded border border-zinc-200 bg-white">
-                            <DetailSection title="Data Diri Siswa">
+                            <DetailSection title="Data Diri Warga">
                                 <div className="student-detail-grid">
                                     <DetailItem
                                         label="Kewarganegaraan"
-                                        value={student.citizenship}
+                                        value={member.citizenship}
+                                    />
+                                    <DetailItem
+                                        label="Nomor Induk Warga (NIW)"
+                                        value={member.memberNumber}
                                     />
                                     <DetailItem
                                         label="Nomor Identitas (KTP/KK)"
-                                        value={student.identityNumber}
+                                        value={member.identityNumber}
                                     />
                                     <DetailItem
                                         label="Tempat Lahir"
-                                        value={student.birthPlace}
+                                        value={member.birthPlace}
                                     />
                                     <DetailItem
                                         label="Tanggal Lahir"
-                                        value={student.birthDate}
+                                        value={member.birthDate}
                                     />
                                     <DetailItem
                                         label="Jenis Kelamin"
-                                        value={student.gender}
+                                        value={member.gender}
                                     />
                                     <DetailItem
                                         label="Agama"
-                                        value={student.religion}
+                                        value={member.religion}
                                     />
                                 </div>
                             </DetailSection>
 
-                            <DetailSection title="Kontak & Wali">
+                            <DetailSection title="Kontak">
                                 <div className="student-detail-grid student-detail-grid--contact">
                                     <DetailItem
                                         label="Alamat Lengkap"
-                                        value={student.address}
+                                        value={member.address}
                                     />
                                     <DetailItem
                                         label="Pekerjaan"
-                                        value={student.occupation}
+                                        value={member.occupation}
                                     />
                                     <DetailItem
                                         label="No HP / WA"
                                         value={
-                                            student.phone
-                                                ? `+62${student.phone}`
+                                            member.phone
+                                                ? `+62${member.phone}`
                                                 : null
                                         }
-                                    />
-                                    <DetailItem
-                                        label="Nama Ayah / Wali"
-                                        value={student.fatherOrGuardianName}
                                     />
                                 </div>
                             </DetailSection>
 
                             <DetailSection title="Data Keanggotaan">
                                 <div className="student-detail-grid">
-                                    <DetailBadgeItem label="Unit Latihan">
+                                    <DetailBadgeItem label="Unit Organisasi">
                                         <Badge
                                             className="rounded-none border-zinc-700 bg-zinc-700 px-2.5 py-1 text-sm font-semibold text-white"
                                             variant="unstyled"
                                         >
-                                            {emptyValue(student.trainingUnit)}
+                                            {emptyValue(member.organizationUnit)}
                                         </Badge>
                                     </DetailBadgeItem>
                                     {shouldShowRanting ? (
                                         <DetailItem
                                             label="Ranting"
-                                            value={student.ranting}
+                                            value={member.ranting}
                                         />
                                     ) : null}
                                     <DetailItem
-                                        label="Tanggal Gabung"
-                                        value={student.joinedAt}
+                                        label="Tanggal Pengesahan"
+                                        value={member.legalizedAt}
                                     />
-                                    <DetailBadgeItem label="Status Siswa">
+                                    <DetailItem
+                                        label="Tempat Pengesahan"
+                                        value={member.legalizationPlace}
+                                    />
+                                    <DetailBadgeItem label="Status Warga">
                                         <Badge
                                             className="justify-center border-0"
                                             size="sm"
                                             variant={statusBadgeVariant(
-                                                student.status,
+                                                member.status,
                                             )}
                                         >
-                                            {statusLabel(student.status)}
+                                            {statusLabel(member.status)}
                                         </Badge>
                                     </DetailBadgeItem>
                                 </div>
@@ -377,11 +362,11 @@ export default function AdminMasterDataSiswaShow({
                         </section>
 
                         <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
-                            {canDeleteStudent ? (
+                            {canDeleteMember ? (
                                 <Button
                                     className="w-full rounded-full hover:border-brand-red! hover:bg-brand-red! hover:text-white! sm:w-40"
                                     icon={<Trash2 className="h-4 w-4" />}
-                                    onClick={handleDeleteStudent}
+                                    onClick={handleDeleteMember}
                                     size="md"
                                     variant="outline"
                                 >
@@ -402,30 +387,31 @@ export default function AdminMasterDataSiswaShow({
                 </div>
             </div>
 
-            <StudentFormModal
+            <MemberFormModal
                 initialData={{
-                    _method: "put",
-                    address: student.address ?? "",
-                    belt: student.belt,
-                    birth_date: student.birthDateValue,
-                    birth_place: student.birthPlace ?? "",
-                    citizenship: student.citizenship,
-                    father_or_guardian_name: student.fatherOrGuardianName ?? "",
-                    gender: student.gender,
-                    identity_number: student.identityNumber,
-                    joined_at: student.joinedAtValue,
-                    name: student.name,
-                    occupation: student.occupation ?? "",
-                    organization_unit_id: String(student.organizationUnitId),
-                    phone: student.phone ?? "",
-                    religion: student.religion ?? "",
-                    status: student.status,
+                    _method: 'put',
+                    address: member.address ?? '',
+                    birth_date: member.birthDateValue,
+                    birth_place: member.birthPlace ?? '',
+                    citizenship: member.citizenship,
+                    gender: member.gender,
+                    identity_number: member.identityNumber ?? '',
+                    legalized_at: member.legalizedAtValue,
+                    legalization_place: member.legalizationPlace ?? '',
+                    member_number: member.memberNumber,
+                    name: member.name,
+                    occupation: member.occupation ?? '',
+                    organization_unit_id: String(member.organizationUnitId),
+                    phone: member.phone ?? '',
+                    photo_url: member.photoUrl ?? null,
+                    religion: member.religion ?? '',
+                    status: member.status,
                 }}
                 mode="edit"
                 onClose={() => setIsEditOpen(false)}
                 open={isEditOpen}
-                submitUrl={`/admin/master-data/siswa/${student.id}`}
-                trainingUnitOptions={trainingUnitOptions}
+                organizationUnitOptions={organizationUnitOptions}
+                submitUrl={`/admin/master-data/warga/${member.id}`}
             />
         </AdminLayout>
     );

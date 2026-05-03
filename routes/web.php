@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\MemberController;
+use App\Http\Controllers\Admin\OrganizationUnitController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Support\AdminAccess;
 use Inertia\Inertia;
@@ -47,6 +49,27 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/master-data/siswa/{student}', [StudentController::class, 'show'])->name('admin.master-data.siswa.show');
     Route::put('/admin/master-data/siswa/{student}', [StudentController::class, 'update'])->name('admin.master-data.siswa.update');
     Route::delete('/admin/master-data/siswa/{student}', [StudentController::class, 'destroy'])->name('admin.master-data.siswa.destroy');
+
+    Route::get('/admin/master-data/warga', [MemberController::class, 'index'])->name('admin.master-data.warga');
+    Route::post('/admin/master-data/warga', [MemberController::class, 'store'])->name('admin.master-data.warga.store');
+    Route::get('/admin/master-data/warga/{member}', [MemberController::class, 'show'])->name('admin.master-data.warga.show');
+    Route::put('/admin/master-data/warga/{member}', [MemberController::class, 'update'])->name('admin.master-data.warga.update');
+    Route::delete('/admin/master-data/warga/{member}', [MemberController::class, 'destroy'])->name('admin.master-data.warga.destroy');
+
+    Route::get('/admin/pengaturan/{scope}', [OrganizationUnitController::class, 'index'])
+        ->where('scope', 'cabang|ranting|rayon|sub-rayon|komisariat')
+        ->name('admin.pengaturan.organization-unit');
+    Route::post('/admin/pengaturan/{scope}', [OrganizationUnitController::class, 'store'])
+        ->where('scope', 'cabang|ranting|rayon|sub-rayon|komisariat')
+        ->name('admin.pengaturan.organization-unit.store');
+    Route::put('/admin/pengaturan/{scope}/{organizationUnit}', [OrganizationUnitController::class, 'update'])
+        ->where('scope', 'cabang|ranting|rayon|sub-rayon|komisariat')
+        ->whereNumber('organizationUnit')
+        ->name('admin.pengaturan.organization-unit.update');
+    Route::delete('/admin/pengaturan/{scope}/{organizationUnit}', [OrganizationUnitController::class, 'destroy'])
+        ->where('scope', 'cabang|ranting|rayon|sub-rayon|komisariat')
+        ->whereNumber('organizationUnit')
+        ->name('admin.pengaturan.organization-unit.destroy');
 
     Route::get('/admin/profil-akun', [ProfileController::class, 'show'])->name('admin.profile');
     Route::put('/admin/profil-akun', [ProfileController::class, 'updateProfile'])->name('admin.profile.update');

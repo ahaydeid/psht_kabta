@@ -27,14 +27,14 @@ const confirmButtonColors = {
 };
 
 const confirmButtonClasses = {
-    danger: '!text-white',
-    info: '!text-white',
-    primary: '!text-brand-black',
-    success: '!text-white',
-    warning: '!text-brand-black',
+    danger: 'text-white!',
+    info: 'text-white!',
+    primary: 'text-brand-black!',
+    success: 'text-white!',
+    warning: 'text-brand-black!',
 };
 
-const alertTitleClassName = '!text-2xl';
+const alertTitleClassName = 'text-2xl!';
 
 export function confirmAction(options: ConfirmOptions = {}) {
     const variant = options.variant ?? 'primary';
@@ -52,7 +52,7 @@ export function confirmAction(options: ConfirmOptions = {}) {
         customClass: {
             title: alertTitleClassName,
             confirmButton: options.confirmButtonClassName ?? confirmButtonClasses[variant],
-            cancelButton: '!text-zinc-700',
+            cancelButton: 'text-zinc-700!',
         },
     });
 }
@@ -66,7 +66,7 @@ export function showToast({ title, icon = 'success' }: ToastOptions) {
         confirmButtonColor: icon === 'success' ? confirmButtonColors.success : confirmButtonColors.primary,
         customClass: {
             title: alertTitleClassName,
-            confirmButton: icon === 'success' ? '!text-white' : '!text-brand-black',
+            confirmButton: icon === 'success' ? 'text-white!' : 'text-brand-black!',
         },
     });
 }

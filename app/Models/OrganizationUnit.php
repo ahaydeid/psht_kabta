@@ -33,6 +33,16 @@ class OrganizationUnit extends Model
         return $this->hasMany(User::class);
     }
 
+    public function members(): HasMany
+    {
+        return $this->hasMany(Member::class);
+    }
+
+    public function students(): HasMany
+    {
+        return $this->hasMany(Student::class);
+    }
+
     /**
      * @return array<int>
      */

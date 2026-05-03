@@ -6,6 +6,16 @@ use App\Models\User;
 
 class AdminAccess
 {
+    private const ORGANIZATION_ADMIN_ROLES = [
+        'super_admin',
+        'admin_pusat',
+        'admin_cabang',
+        'admin_ranting',
+        'admin_rayon',
+        'admin_sub_rayon',
+        'admin_komisariat',
+    ];
+
     /**
      * @return array<int, string>
      */
@@ -58,21 +68,55 @@ class AdminAccess
     /**
      * @return array<int, string>
      */
+    public static function allSettingScopes(): array
+    {
+        return ['cabang', 'ranting', 'rayon', 'sub-rayon', 'komisariat'];
+    }
+
+    /**
+     * @return array<int, string>
+     */
     public static function allowedSettingScopes(?User $user): array
     {
-        if (! $user) {
+        if (! self::canViewOrganization($user)) {
             return [];
         }
 
         if ($user->hasRole('super_admin')) {
-            return ['cabang', 'ranting', 'rayon', 'sub-rayon', 'komisariat'];
+            return self::allSettingScopes();
         }
 
         $scope = self::normalizedScope($user->organizationUnit?->type);
 
-        return in_array($scope, ['cabang', 'ranting', 'rayon', 'sub-rayon', 'komisariat'], true)
+        return in_array($scope, self::allSettingScopes(), true)
             ? [$scope]
             : [];
+    }
+
+    public static function canAccessSettingScope(?User $user, string $scope): bool
+    {
+        return in_array($scope, self::allowedSettingScopes($user), true);
+    }
+
+    public static function canViewOrganization(?User $user): bool
+    {
+        if (! $user) {
+            return false;
+        }
+
+        return $user->can('organization.view')
+            || $user->can('organization.manage')
+            || $user->hasRole(self::ORGANIZATION_ADMIN_ROLES);
+    }
+
+    public static function canManageOrganization(?User $user): bool
+    {
+        if (! $user) {
+            return false;
+        }
+
+        return $user->can('organization.manage')
+            || $user->hasRole(self::ORGANIZATION_ADMIN_ROLES);
     }
 
     public static function canViewRolePermission(?User $user): bool

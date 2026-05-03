@@ -2,9 +2,7 @@ import {
     Building2,
     CalendarCheck,
     LayoutDashboard,
-    Medal,
     Settings,
-    ShieldCheck,
     UserRoundCheck,
     UserCog,
     UsersRound,
@@ -31,16 +29,6 @@ export const adminMenu: MenuItem[] = [
                 name: 'Master Warga',
                 path: '/admin/master-data/warga',
                 icon: UsersRound,
-            },
-            {
-                name: 'Master Pelatih',
-                path: '/admin/master-data/pelatih',
-                icon: ShieldCheck,
-            },
-            {
-                name: 'Tingkatan',
-                path: '/admin/master-data/tingkatan',
-                icon: Medal,
             },
         ],
     },
@@ -75,6 +63,10 @@ export const adminMenu: MenuItem[] = [
                 icon: Building2,
                 children: [
                     {
+                        name: 'Data Cabang',
+                        path: '/admin/pengaturan/cabang',
+                    },
+                    {
                         name: 'Jadwal Latihan',
                         path: '/admin/pengaturan/cabang/jadwal-latihan',
                     },
@@ -85,6 +77,10 @@ export const adminMenu: MenuItem[] = [
                 path: '/admin/pengaturan/ranting',
                 icon: Building2,
                 children: [
+                    {
+                        name: 'Data Ranting',
+                        path: '/admin/pengaturan/ranting',
+                    },
                     {
                         name: 'Jadwal Latihan',
                         path: '/admin/pengaturan/ranting/jadwal-latihan',
@@ -97,6 +93,10 @@ export const adminMenu: MenuItem[] = [
                 icon: Building2,
                 children: [
                     {
+                        name: 'Data Rayon',
+                        path: '/admin/pengaturan/rayon',
+                    },
+                    {
                         name: 'Jadwal Latihan',
                         path: '/admin/pengaturan/rayon/jadwal-latihan',
                     },
@@ -108,6 +108,10 @@ export const adminMenu: MenuItem[] = [
                 icon: Building2,
                 children: [
                     {
+                        name: 'Data Sub Rayon',
+                        path: '/admin/pengaturan/sub-rayon',
+                    },
+                    {
                         name: 'Jadwal Latihan',
                         path: '/admin/pengaturan/sub-rayon/jadwal-latihan',
                     },
@@ -118,6 +122,10 @@ export const adminMenu: MenuItem[] = [
                 path: '/admin/pengaturan/komisariat',
                 icon: Building2,
                 children: [
+                    {
+                        name: 'Data Komisariat',
+                        path: '/admin/pengaturan/komisariat',
+                    },
                     {
                         name: 'Jadwal Latihan',
                         path: '/admin/pengaturan/komisariat/jadwal-latihan',
