@@ -37,14 +37,14 @@ export const publicNavigationItems: PublicNavigationItem[] = [
         label: 'Berita',
     },
     {
-        href: '/jadwal',
-        icon: CalendarDays,
-        label: 'Jadwal',
-    },
-    {
         href: '/galeri',
         icon: Images,
         label: 'Galeri',
+    },
+    {
+        href: '/jadwal',
+        icon: CalendarDays,
+        label: 'Jadwal',
     },
     {
         href: '/kontak',
