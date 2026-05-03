@@ -13,6 +13,17 @@ const publicAppName = 'PSHT Cabang Kab. Tangerang';
 const loadingLogoSrc = '/img/logo-psht.webp';
 type PageModule = { default: ComponentType };
 const pages = import.meta.glob<PageModule>('./Pages/**/*.tsx');
+const initialPathname = window.location.pathname.replace(/\/+$/, '') || '/';
+
+declare global {
+    interface Window {
+        hasClosedHomeInformationModal?: boolean;
+        hasPlayedHomeIntroAnimation?: boolean;
+        initialAppPathname?: string;
+    }
+}
+
+window.initialAppPathname = initialPathname;
 
 function getAppName() {
     const path = window.location.pathname;

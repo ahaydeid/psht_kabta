@@ -13,12 +13,32 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return Inertia::render('Home/Index');
 })->name('home');
-Route::get('/profil', function () {
-    return Inertia::render('Home/Profil');
-})->name('public.profile');
+Route::redirect('/profil', '/profil/tentang')->name('public.profile');
+Route::get('/profil/tentang', function () {
+    return Inertia::render('Home/ProfilTentang');
+})->name('public.profile.about');
+Route::get('/profil/struktur-organisasi', function () {
+    return Inertia::render('Home/ProfilStrukturOrganisasi');
+})->name('public.profile.organization-structure');
+Route::get('/profil/keanggotaan', function () {
+    return Inertia::render('Home/ProfilKeanggotaan');
+})->name('public.profile.membership');
+Route::get('/profil/keanggotaan/{memberId}', function (string $memberId) {
+    return Inertia::render('Home/ProfilKeanggotaanDetail', [
+        'memberId' => $memberId,
+    ]);
+})->name('public.profile.membership.detail');
+Route::get('/profil/ranting', function () {
+    return Inertia::render('Home/ProfilRanting');
+})->name('public.profile.branches');
 Route::get('/berita', function () {
     return Inertia::render('Home/Berita');
 })->name('public.news');
+Route::get('/berita/{slug}', function (string $slug) {
+    return Inertia::render('Home/BeritaDetail', [
+        'slug' => $slug,
+    ]);
+})->name('public.news.detail');
 Route::get('/jadwal', function () {
     return Inertia::render('Home/Jadwal');
 })->name('public.schedule');

@@ -1,4 +1,7 @@
 import type { ReactNode } from 'react';
+import { usePage } from '@inertiajs/react';
+
+import { cn } from '@/lib/cn';
 
 import { PublicBottomBar } from './PublicBottomBar';
 import { PublicFooter } from './PublicFooter';
@@ -9,13 +12,15 @@ type PublicLayoutProps = {
 };
 
 export function PublicLayout({ children }: PublicLayoutProps) {
+    const { url } = usePage();
+    const isHome = url === '/';
+
     return (
-        <div className="min-h-screen bg-white text-zinc-950">
+        <div className="flex min-h-dvh flex-col bg-white text-zinc-950">
             <PublicTopbar />
-            {children}
+            <div className={cn('flex flex-1 flex-col', !isHome && 'pt-16')}>{children}</div>
             <PublicFooter />
             <PublicBottomBar />
         </div>
     );
 }
-

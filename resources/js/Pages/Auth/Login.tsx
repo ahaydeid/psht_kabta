@@ -29,7 +29,6 @@ export default function LoginPage() {
                             className="h-auto max-h-96 max-w-[72%] object-contain"
                             src="/img/logo-psht.webp"
                         />
-                        <div className="mt-6 text-center text-sm font-semibold text-slate-700">PSHT Cabang Kab. Tangerang</div>
                     </div>
 
                     <div className="flex flex-col justify-center px-6 py-10 md:px-14 md:py-0">

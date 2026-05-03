@@ -1,7 +1,7 @@
-import type { PublicArticle, PublicGalleryItem, PublicQuickAccess, PublicTrainingSchedule } from '../types';
+import type { PublicArticle, PublicGalleryItem, PublicInformationPopup, PublicQuickAccess, PublicTrainingSchedule } from '../types';
 
 export const organizationProfile = {
-    name: 'PSHT Cabang Kab. Tangerang',
+    name: 'PSHT Kabta',
     eyebrow: 'Persaudaraan Setia Hati Terate',
     headline: 'Membangun persaudaraan, kedisiplinan, dan budi luhur.',
     description:
@@ -14,8 +14,7 @@ export const organizationProfile = {
 
 export const homeIntro = {
     title: 'Informasi resmi PSHT Cabang Kabupaten Tangerang',
-    lead: 'Beranda ini disiapkan sebagai pintu masuk informasi public organisasi: profil cabang, kabar kegiatan, jadwal latihan, galeri, dan kontak resmi.',
-    note: 'Konten masih dummy dan akan diganti dari CMS admin.',
+    lead: 'Mendidik manusia yang berbudi luhur, tahu benar dan salah, serta bertakwa kepada Tuhan Yang Maha Esa.',
 };
 
 export const featuredNotice = {
@@ -24,6 +23,16 @@ export const featuredNotice = {
     title: 'Validasi data dan informasi cabang',
     description:
         'Pengurus cabang menyiapkan kanal informasi terpadu agar warga, siswa, dan masyarakat dapat menemukan informasi resmi dengan lebih mudah.',
+};
+
+export const homeInformationPopup: PublicInformationPopup = {
+    body: 'Website public PSHT Cabang Kabupaten Tangerang sedang dalam tahap penyiapan. Informasi yang tampil saat ini masih berupa data contoh dan akan diperbarui melalui CMS admin.',
+    date: 'Mei 2026',
+    imageAlt: 'Placeholder informasi website',
+    imageUrl: '/img/logo-psht.webp',
+    // Set to true when the home information modal should appear again.
+    isActive: false,
+    title: 'Informasi Website',
 };
 
 export const organizationStats = [
