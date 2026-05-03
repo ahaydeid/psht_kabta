@@ -10,11 +10,25 @@ import { publicNavigationItems } from '../../data/navigation';
 export function PublicTopbar() {
     const { url } = usePage();
     const [isScrolled, setIsScrolled] = useState(false);
+    const [isTopbarVisible, setIsTopbarVisible] = useState(true);
     const isHome = url === '/';
     const useTransparentTopbar = isHome && !isScrolled;
 
     useEffect(() => {
-        const updateScrolled = () => setIsScrolled(window.scrollY > 8);
+        let lastScrollY = window.scrollY;
+
+        const updateScrolled = () => {
+            const currentScrollY = window.scrollY;
+            const scrollDelta = currentScrollY - lastScrollY;
+
+            setIsScrolled(currentScrollY > 8);
+            if (Math.abs(scrollDelta) < 8) {
+                return;
+            }
+
+            setIsTopbarVisible(currentScrollY < 24 || scrollDelta < 0);
+            lastScrollY = currentScrollY;
+        };
 
         updateScrolled();
         window.addEventListener('scroll', updateScrolled, { passive: true });
@@ -22,10 +36,15 @@ export function PublicTopbar() {
         return () => window.removeEventListener('scroll', updateScrolled);
     }, []);
 
+    useEffect(() => {
+        setIsTopbarVisible(true);
+    }, [url]);
+
     return (
         <header
             className={cn(
-                'fixed inset-x-0 top-0 z-40 border-b transition-colors duration-300',
+                'fixed inset-x-0 top-0 z-40 border-b transition-[background-color,border-color,box-shadow,opacity,transform] duration-300 ease-out will-change-transform',
+                isTopbarVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0',
                 useTransparentTopbar ? 'border-transparent bg-transparent' : 'border-zinc-200 bg-white/95 shadow-sm backdrop-blur',
             )}
         >

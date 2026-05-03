@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { ArrowRight, ChevronDown, Heart } from 'lucide-react';
+import { ChevronRight, ChevronDown, Heart } from 'lucide-react';
 import type { CSSProperties } from 'react';
 import { useEffect, useRef, useState } from 'react';
 
@@ -201,7 +201,7 @@ export function HomeIntroSection() {
                                 href="/profil/tentang"
                             >
                                 Lihat Profil
-                                <ArrowRight className="ml-2 size-4" />
+                                <ChevronRight className="ml-2 size-4" />
                             </Link>
                             <Link
                                 className="inline-flex min-h-10 items-center justify-center rounded-full border border-white/25 bg-white/10 px-5 text-sm font-semibold text-white transition hover:border-brand-yellow hover:text-brand-yellow"

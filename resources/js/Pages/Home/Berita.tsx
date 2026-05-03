@@ -40,91 +40,91 @@ export default function Berita() {
         <PublicLayout>
             <Head title="Berita" />
             <main className="bg-white">
-                <section className="py-6 sm:py-8 lg:py-10">
-                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                        <div className="relative overflow-hidden bg-brand-black">
-                            <div
-                                className="flex transition-transform duration-700 ease-out"
-                                style={{ transform: `translateX(-${activeIndex * 100}%)` }}
-                            >
-                                {newsArticles.map((article) => (
-                                    <div
-                                        className="min-w-full bg-cover bg-center"
-                                        key={article.slug}
-                                        style={{
-                                            backgroundImage: `linear-gradient(90deg, rgb(17 17 17 / 0.94), rgb(17 17 17 / 0.74), rgb(17 17 17 / 0.42)), url(${article.image})`,
-                                        }}
-                                    >
-                                        <div className="relative h-[30rem] p-6 text-white sm:h-[32rem] sm:p-8 lg:h-[34rem] lg:p-10">
-                                            <div className="max-w-3xl pr-2">
-                                                <p className="text-xs font-bold uppercase tracking-[0.24em] text-brand-yellow">{article.category}</p>
-                                                <h1 className="mt-4 line-clamp-3 text-3xl font-bold leading-tight sm:mt-5 sm:text-5xl lg:text-6xl">{article.title}</h1>
-                                                <p className="mt-4 max-w-2xl line-clamp-2 text-sm leading-6 text-white/68 sm:mt-5 sm:line-clamp-3 sm:text-base sm:leading-7">{article.excerpt}</p>
-                                                <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-white/58 sm:mt-8 sm:gap-x-5 sm:gap-y-3">
-                                                    <span>{article.date}</span>
-                                                    <span className="inline-flex items-center gap-2">
-                                                        <User2 className="size-4" />
-                                                        {article.author} | {article.ranting}
-                                                    </span>
-                                                    <span className="inline-flex items-center gap-2">
-                                                        <Clock3 className="size-4" />
-                                                        {article.readTime}
-                                                    </span>
-                                                </div>
-                                                <Link
-                                                    className="mt-8 inline-flex items-center text-sm font-semibold text-brand-yellow transition hover:text-white"
-                                                    href={`/berita/${article.slug}`}
-                                                >
-                                                    Baca artikel
-                                                    <ArrowRight className="ml-2 size-4" />
-                                                </Link>
+                <section>
+                    <div className="relative overflow-hidden bg-brand-black">
+                        <div
+                            className="flex transition-transform duration-700 ease-out"
+                            style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+                        >
+                            {newsArticles.map((article) => (
+                                <div
+                                    className="min-w-full bg-cover bg-center"
+                                    key={article.slug}
+                                    style={{
+                                        backgroundImage: `linear-gradient(90deg, rgb(17 17 17 / 0.94), rgb(17 17 17 / 0.74), rgb(17 17 17 / 0.42)), url(${article.image})`,
+                                    }}
+                                >
+                                    <div className="relative h-120 p-6 text-white sm:h-128 sm:p-8 lg:h-136 lg:p-10">
+                                        <div className="max-w-3xl pr-2">
+                                            <p className="text-xs font-bold uppercase tracking-widest text-brand-yellow">{article.category}</p>
+                                            <h1 className="mt-4 line-clamp-3 text-3xl font-bold leading-tight sm:mt-5 sm:text-5xl lg:text-6xl">{article.title}</h1>
+                                            <p className="mt-4 max-w-2xl line-clamp-2 text-sm leading-6 text-white/68 sm:mt-5 sm:line-clamp-3 sm:text-base sm:leading-7">{article.excerpt}</p>
+                                            <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-white/58 sm:mt-8 sm:gap-x-5 sm:gap-y-3">
+                                                <span>{article.date}</span>
+                                                <span className="inline-flex items-center gap-2">
+                                                    <User2 className="size-4" />
+                                                    {article.author} | {article.ranting}
+                                                </span>
+                                                <span className="inline-flex items-center gap-2">
+                                                    <Clock3 className="size-4" />
+                                                    {article.readTime}
+                                                </span>
                                             </div>
+                                            <Link
+                                                className="mt-8 inline-flex items-center text-sm font-semibold text-brand-yellow transition hover:text-white"
+                                                href={`/berita/${article.slug}`}
+                                            >
+                                                Baca artikel
+                                                <ArrowRight className="ml-2 size-4" />
+                                            </Link>
                                         </div>
                                     </div>
-                                ))}
-                            </div>
-
-                            <div className="absolute inset-x-6 bottom-6 flex items-center justify-between gap-4 sm:inset-x-8 sm:bottom-8 lg:inset-x-10 lg:bottom-10">
-                                <div className="flex gap-2">
-                                    {newsArticles.map((article, index) => (
-                                        <button
-                                            aria-label={`Tampilkan berita ${index + 1}`}
-                                            className={`h-2.5 rounded-full transition-all ${
-                                                activeIndex === index ? 'w-8 bg-brand-yellow' : 'w-2.5 bg-white/35 hover:bg-white/70'
-                                            }`}
-                                            key={article.slug}
-                                            onClick={() => setActiveIndex(index)}
-                                            type="button"
-                                        />
-                                    ))}
                                 </div>
-                                <div className="flex shrink-0 gap-2">
-                                    <button
-                                        aria-label="Berita sebelumnya"
-                                        className="inline-flex size-10 items-center justify-center border border-white/20 text-white transition hover:border-brand-yellow hover:text-brand-yellow"
-                                        onClick={() => moveCarousel('previous')}
-                                        type="button"
-                                    >
-                                        <ChevronLeft className="size-5" />
-                                    </button>
-                                    <button
-                                        aria-label="Berita berikutnya"
-                                        className="inline-flex size-10 items-center justify-center border border-white/20 text-white transition hover:border-brand-yellow hover:text-brand-yellow"
-                                        onClick={() => moveCarousel('next')}
-                                        type="button"
-                                    >
-                                        <ChevronRight className="size-5" />
-                                    </button>
-                                </div>
-                            </div>
+                            ))}
                         </div>
 
-                        <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_20rem]">
-                            <div>
+                        <div className="absolute inset-x-6 bottom-6 flex items-center justify-center gap-4 sm:inset-x-8 sm:bottom-8 lg:inset-x-10 lg:bottom-10">
+                            <div className="flex justify-center gap-2">
+                                {newsArticles.map((article, index) => (
+                                    <button
+                                        aria-label={`Tampilkan berita ${index + 1}`}
+                                        className={`h-2.5 rounded-full transition-all ${
+                                            activeIndex === index ? 'w-8 bg-brand-yellow' : 'w-2.5 bg-white/35 hover:bg-white/70'
+                                        }`}
+                                        key={article.slug}
+                                        onClick={() => setActiveIndex(index)}
+                                        type="button"
+                                    />
+                                ))}
+                            </div>
+                            <div className="absolute right-0 hidden shrink-0 gap-2 sm:flex">
+                                <button
+                                    aria-label="Berita sebelumnya"
+                                    className="inline-flex size-10 items-center justify-center border border-white/20 text-white transition hover:border-brand-yellow hover:text-brand-yellow"
+                                    onClick={() => moveCarousel('previous')}
+                                    type="button"
+                                >
+                                    <ChevronLeft className="size-5" />
+                                </button>
+                                <button
+                                    aria-label="Berita berikutnya"
+                                    className="inline-flex size-10 items-center justify-center border border-white/20 text-white transition hover:border-brand-yellow hover:text-brand-yellow"
+                                    onClick={() => moveCarousel('next')}
+                                    type="button"
+                                >
+                                    <ChevronRight className="size-5" />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+                        <div className="mt-8 gap-8 lg:flex lg:items-start">
+                            <div className="min-w-0 flex-1">
                                 <div className="columns-1 gap-5 md:columns-2">
                                     {visibleArticles.map((article) => (
                                         <Link
-                                            className="group mb-5 block break-inside-avoid overflow-hidden rounded-lg border border-zinc-200 bg-white transition hover:border-brand-yellow hover:shadow-[0_10px_24px_rgba(24,24,27,0.12)]"
+                                            className="group mb-5 block break-inside-avoid overflow-hidden rounded-lg border border-zinc-200 bg-white transition hover:border-brand-yellow hover:shadow-md"
                                             href={`/berita/${article.slug}`}
                                             key={article.slug}
                                         >
@@ -174,7 +174,7 @@ export default function Berita() {
                                 </div>
                             </div>
 
-                            <aside className="border border-zinc-200 bg-white p-6 lg:sticky lg:top-24 lg:self-start">
+                            <aside className="mt-8 border border-zinc-200 bg-white p-6 lg:sticky lg:top-24 lg:mt-0 lg:w-80 lg:shrink-0">
                                 <p className="text-sm font-bold text-zinc-950">Kategori</p>
                                 <div className="mt-5 flex flex-wrap gap-2">
                                     {categories.map((category) => (

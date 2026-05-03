@@ -93,8 +93,8 @@ function OfficialCard({ name, position, variant = 'light' }: { name: string; pos
     const isDark = variant === 'dark';
 
     return (
-        <article className={isDark ? 'bg-brand-black p-5 text-white' : 'border border-zinc-200 bg-white p-5 text-zinc-950'}>
-            <div className="flex items-center gap-4">
+        <article className={isDark ? 'rounded-lg bg-brand-black p-5 text-white' : 'rounded-lg border border-zinc-200 bg-white p-5 text-zinc-950'}>
+            <div className="flex items-start gap-4">
                 <span
                     className={
                         isDark
@@ -104,11 +104,11 @@ function OfficialCard({ name, position, variant = 'light' }: { name: string; pos
                 >
                     <User2 className="size-6" />
                 </span>
-                <div>
+                <div className="space-y-0.5">
                     <p className={isDark ? 'text-sm font-semibold text-brand-yellow' : 'text-sm font-semibold text-brand-yellow-dark'}>
                         {position}
                     </p>
-                    <h3 className="mt-2 text-xl font-bold">{name}</h3>
+                    <h3 className="text-xl leading-none font-bold">{name}</h3>
                 </div>
             </div>
         </article>
@@ -180,7 +180,7 @@ export default function ProfilStrukturOrganisasi() {
                             <SectionLabel>Bidang Kerja</SectionLabel>
                             <div className="relative mt-4 grid gap-4 lg:grid-cols-3">
                                 {departments.map((department) => (
-                                    <article className="border border-zinc-200 bg-white p-5" key={department.title}>
+                                    <article className="rounded-lg border border-zinc-200 bg-white p-5" key={department.title}>
                                         <h3 className="text-xl font-bold text-zinc-950">{department.title}</h3>
                                         <div className="mt-5 space-y-2">
                                             {department.members.map((member, index) => (

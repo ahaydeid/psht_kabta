@@ -5,6 +5,14 @@ import { PublicLayout } from './components/layout/PublicLayout';
 import { dummyMembers } from './data/dummyMembers';
 
 const displayValue = (value: string) => value.trim() || '-';
+const ketuaRantingByName: Record<string, string> = {
+    Balaraja: 'Hendri Saputra',
+    Cikupa: 'Agus Salim',
+    Curug: 'Siti Aminah',
+    Kresek: 'Ahadi',
+    'Pasar Kemis': 'Fajar Maulana',
+    Tigaraksa: 'Rizki Maulana',
+};
 
 type ProfilKeanggotaanDetailProps = {
     memberId: string;
@@ -20,14 +28,20 @@ export default function ProfilKeanggotaanDetail({ memberId }: ProfilKeanggotaanD
               { label: 'Pekerjaan', value: member.occupation },
           ]
         : [];
-    const organizationItems = member
+    const studentItems = member
+        ? [
+              { label: 'Tahun Masuk', value: member.joinedYear },
+              { label: 'Tempat Latihan', value: member.rayon },
+              { label: 'Ranting Siswa', value: member.ranting },
+              { label: 'Ketur Saat Siswa', value: ketuaRantingByName[member.ranting] ?? '' },
+          ]
+        : [];
+    const membershipItems = member
         ? [
               { label: 'Cabang', value: member.branch },
               { label: 'Disahkan di', value: member.approvedAt },
               { label: 'Ranting', value: member.ranting },
               { label: 'Rayon', value: member.rayon },
-              { label: 'Tahun Masuk', value: member.joinedYear },
-              { label: 'Lokasi Latihan', value: member.latihanLocation },
               { label: 'Tempat Melatih Aktif', value: member.instructorAt },
               { label: 'Kontak', value: member.contact },
           ]
@@ -37,7 +51,7 @@ export default function ProfilKeanggotaanDetail({ memberId }: ProfilKeanggotaanD
         <PublicLayout>
             <Head title={member ? member.name : 'Warga'} />
             <main className="min-h-dvh flex-1 px-4 py-10 sm:px-6 lg:px-8">
-                <div className="mx-auto w-full max-w-3xl">
+                <div className="mx-auto w-full max-w-7xl">
                     <header className="mb-6 flex items-center gap-3">
                         <Link
                             aria-label="Kembali"
@@ -74,7 +88,7 @@ export default function ProfilKeanggotaanDetail({ memberId }: ProfilKeanggotaanD
 
                             <section className="mt-8 border-t border-zinc-200 pt-6">
                                 <h3 className="text-lg font-bold text-zinc-950">Identitas Diri</h3>
-                                <dl className="mt-5 grid gap-5 text-sm text-zinc-600 sm:grid-cols-2">
+                                <dl className="mt-5 grid gap-5 text-sm text-zinc-600 sm:grid-cols-2 lg:grid-cols-3">
                                     {identityItems.map((item) => (
                                         <div key={item.label}>
                                             <dt className="font-semibold text-zinc-950">{item.label}</dt>
@@ -85,9 +99,21 @@ export default function ProfilKeanggotaanDetail({ memberId }: ProfilKeanggotaanD
                             </section>
 
                             <section className="mt-8 border-t border-zinc-200 pt-6">
-                                <h3 className="text-lg font-bold text-zinc-950">Data Organisasi</h3>
-                                <dl className="mt-5 grid gap-5 text-sm text-zinc-600 sm:grid-cols-2">
-                                    {organizationItems.map((item) => (
+                                <h3 className="text-lg font-bold text-zinc-950">Kesiswaan</h3>
+                                <dl className="mt-5 grid gap-5 text-sm text-zinc-600 sm:grid-cols-2 lg:grid-cols-3">
+                                    {studentItems.map((item) => (
+                                        <div key={item.label}>
+                                            <dt className="font-semibold text-zinc-950">{item.label}</dt>
+                                            <dd className="mt-2 text-base">{displayValue(item.value)}</dd>
+                                        </div>
+                                    ))}
+                                </dl>
+                            </section>
+
+                            <section className="mt-8 border-t border-zinc-200 pt-6">
+                                <h3 className="text-lg font-bold text-zinc-950">Keanggotaan</h3>
+                                <dl className="mt-5 grid gap-5 text-sm text-zinc-600 sm:grid-cols-2 lg:grid-cols-3">
+                                    {membershipItems.map((item) => (
                                         <div key={item.label}>
                                             <dt className="font-semibold text-zinc-950">{item.label}</dt>
                                             <dd className="mt-2 text-base">{displayValue(item.value)}</dd>
