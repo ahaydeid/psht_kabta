@@ -14,7 +14,7 @@ export default function LoginPage() {
 
     const submit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        form.post('/login');
+        form.post('/admin/login');
     };
 
     return (

@@ -14,7 +14,7 @@ export const adminMenu: MenuItem[] = [
     {
         name: 'Dashboard',
         icon: LayoutDashboard,
-        path: '/',
+        path: '/admin/dashboard',
     },
     {
         name: 'Master Data',
@@ -146,7 +146,7 @@ type AdminMenuAccess = {
 };
 
 function dashboardPath(scope?: string): string {
-    return scope && scope !== 'pusat' ? `/admin/dashboard/${scope}` : '/';
+    return scope && scope !== 'pusat' ? `/admin/dashboard/${scope}` : '/admin/dashboard';
 }
 
 function filterMenuItems(items: MenuItem[], access: AdminMenuAccess): MenuItem[] {

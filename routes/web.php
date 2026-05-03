@@ -10,9 +10,28 @@ use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/', function () {
+    return Inertia::render('Home/Index');
+})->name('home');
+Route::get('/profil', function () {
+    return Inertia::render('Home/Profil');
+})->name('public.profile');
+Route::get('/berita', function () {
+    return Inertia::render('Home/Berita');
+})->name('public.news');
+Route::get('/jadwal', function () {
+    return Inertia::render('Home/Jadwal');
+})->name('public.schedule');
+Route::get('/galeri', function () {
+    return Inertia::render('Home/Galeri');
+})->name('public.gallery');
+Route::get('/kontak', function () {
+    return Inertia::render('Home/Kontak');
+})->name('public.contact');
+
 Route::middleware('guest')->group(function () {
-    Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
-    Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login.store');
+    Route::get('/admin/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+    Route::post('/admin/login', [AuthenticatedSessionController::class, 'store'])->name('login.store');
 });
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
@@ -20,7 +39,7 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->name('logout');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', function (Request $request) {
+    Route::get('/admin/dashboard', function (Request $request) {
         abort_unless($request->user()?->can('dashboard.view'), 403);
 
         $scope = AdminAccess::defaultDashboardScope($request->user());

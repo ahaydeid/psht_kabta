@@ -1,7 +1,21 @@
+import { Head } from '@inertiajs/react';
+
+import { HomeIntroSection } from './components/home/HomeIntroSection';
+import { HomeNewsPreviewSection } from './components/home/HomeNewsPreviewSection';
+import { HomeQuickAccessSection } from './components/home/HomeQuickAccessSection';
+import { HomeSchedulePreviewSection } from './components/home/HomeSchedulePreviewSection';
+import { PublicLayout } from './components/layout/PublicLayout';
+
 export default function HomeIndex() {
     return (
-        <main className="flex min-h-screen items-center justify-center">
-            <h1 className="text-3xl font-semibold">Ini halaman awal</h1>
-        </main>
+        <PublicLayout>
+            <Head title="Beranda" />
+            <main>
+                <HomeIntroSection />
+                <HomeQuickAccessSection />
+                <HomeNewsPreviewSection />
+                <HomeSchedulePreviewSection />
+            </main>
+        </PublicLayout>
     );
 }

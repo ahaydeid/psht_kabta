@@ -8,10 +8,17 @@ import { createRoot } from 'react-dom/client';
 
 import { LoadingOverlay } from '@/Components/ui';
 
-const appName = import.meta.env.VITE_APP_NAME ?? 'Sisfo PSHT Kabta';
+const adminAppName = import.meta.env.VITE_APP_NAME ?? 'Sisfo PSHT Kabta';
+const publicAppName = 'PSHT Cabang Kab. Tangerang';
 const loadingLogoSrc = '/img/logo-psht.webp';
 type PageModule = { default: ComponentType };
 const pages = import.meta.glob<PageModule>('./Pages/**/*.tsx');
+
+function getAppName() {
+    const path = window.location.pathname;
+
+    return path.startsWith('/admin') ? adminAppName : publicAppName;
+}
 
 function preloadLoadingLogo() {
     const preloadLink = document.createElement('link');
@@ -57,7 +64,7 @@ function InertiaLoadingIndicator() {
 preloadLoadingLogo();
 
 createInertiaApp({
-    title: (title) => (title ? `${title} - ${appName}` : appName),
+    title: (title) => (title ? `${title} - ${getAppName()}` : getAppName()),
     resolve: (name) =>
         resolvePageComponent<PageModule>(
             `./Pages/${name}.tsx`,

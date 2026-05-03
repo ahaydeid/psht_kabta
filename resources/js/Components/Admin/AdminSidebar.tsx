@@ -25,7 +25,7 @@ function containsActivePath(item: MenuItem, activePath?: string): boolean {
         return false;
     }
 
-    if (item.path === '/' && (activePath === '/' || activePath.startsWith('/admin/dashboard/'))) {
+    if (item.path === '/admin/dashboard' && (activePath === '/admin/dashboard' || activePath.startsWith('/admin/dashboard/'))) {
         return true;
     }
 
@@ -81,8 +81,8 @@ export function AdminSidebar({ isMobileOpen = false, isOpen, onCloseMobile, onTo
         () =>
             allPaths
                 .filter((path) => {
-                    if (path === '/') {
-                        return url === '/' || url.startsWith('/admin/dashboard/');
+                    if (path === '/admin/dashboard') {
+                        return url === '/admin/dashboard' || url.startsWith('/admin/dashboard/');
                     }
 
                     return url === path || url.startsWith(`${path}/`) || url.startsWith(`${path}?`);
