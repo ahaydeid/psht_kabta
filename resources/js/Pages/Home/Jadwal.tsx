@@ -168,7 +168,7 @@ export default function Jadwal() {
                         </div>
 
                         <div className="flex min-h-0 flex-col overflow-hidden lg:pl-6">
-                            <div className="flex items-center border-b border-zinc-200 py-4 sm:pl-6">
+                            <div className="flex items-center py-4 sm:pl-6">
                                 <p className="ml-auto text-right text-xs text-zinc-500">
                                     {selectedLocation.latitude}, {selectedLocation.longitude}
                                 </p>

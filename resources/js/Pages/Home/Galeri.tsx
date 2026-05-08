@@ -1,5 +1,5 @@
 import { Head } from '@inertiajs/react';
-import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 import { PublicLayout } from './components/layout/PublicLayout';
@@ -24,7 +24,7 @@ const galleryAlbums: GalleryAlbum[] = [
         kind: 'single',
         place: 'Cabang Kab. Tangerang',
         slug: 'latihan-gabungan-cabang',
-        title: 'Latihan Gabungan Cabang',
+        title: 'Latihan Gabungan Cabang dan Pembinaan Warga',
     },
     {
         count: 18,
@@ -34,7 +34,7 @@ const galleryAlbums: GalleryAlbum[] = [
         kind: 'group',
         place: 'Ranting Balaraja',
         slug: 'pembinaan-ranting-balaraja',
-        title: 'Pembinaan Ranting Balaraja',
+        title: 'Pembinaan Ranting Balaraja dan Penguatan Materi Dasar',
     },
     {
         count: 9,
@@ -44,7 +44,7 @@ const galleryAlbums: GalleryAlbum[] = [
         kind: 'group',
         place: 'Ranting Kresek',
         slug: 'silaturahmi-warga-kresek',
-        title: 'Silaturahmi Warga Kresek',
+        title: 'Silaturahmi Warga Kresek dan Koordinasi Lintas Rayon',
     },
     {
         count: 1,
@@ -54,7 +54,7 @@ const galleryAlbums: GalleryAlbum[] = [
         kind: 'single',
         place: 'Rayon Binong',
         slug: 'latihan-rayon-binong',
-        title: 'Latihan Rayon Binong',
+        title: 'Latihan Rayon Binong dan Pembinaan Siswa Rutin',
     },
     {
         count: 24,
@@ -64,7 +64,7 @@ const galleryAlbums: GalleryAlbum[] = [
         kind: 'group',
         place: 'Ranting Curug',
         slug: 'dokumentasi-ranting-curug',
-        title: 'Dokumentasi Ranting Curug',
+        title: 'Dokumentasi Ranting Curug dalam Agenda Latihan dan Organisasi',
     },
     {
         count: 1,
@@ -74,7 +74,7 @@ const galleryAlbums: GalleryAlbum[] = [
         kind: 'single',
         place: 'Rayon Talagasari',
         slug: 'sesi-latihan-talaga-sari',
-        title: 'Sesi Latihan Talagasari',
+        title: 'Sesi Latihan Talagasari untuk Pembinaan Dasar',
     },
     {
         count: 15,
@@ -84,7 +84,7 @@ const galleryAlbums: GalleryAlbum[] = [
         kind: 'group',
         place: 'Ranting Pasar Kemis',
         slug: 'pengabdian-pasar-kemis',
-        title: 'Pengabdian Pasar Kemis',
+        title: 'Pengabdian Pasar Kemis dan Dokumentasi Kegiatan Warga',
     },
 ];
 
@@ -112,7 +112,16 @@ export default function Galeri() {
     const [activeAlbum, setActiveAlbum] = useState<GalleryAlbum | null>(null);
     const [activeImageIndex, setActiveImageIndex] = useState(0);
     const [isCaptionExpanded, setIsCaptionExpanded] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [isSuggestionOpen, setIsSuggestionOpen] = useState(false);
     const thumbnailStripRef = useRef<HTMLDivElement>(null);
+    const normalizedSearchQuery = searchQuery.trim().toLowerCase();
+    const searchableAlbums = displayedAlbums.filter((album) => {
+        const haystack = `${album.title} ${album.place} ${album.date}`.toLowerCase();
+
+        return haystack.includes(normalizedSearchQuery);
+    });
+    const suggestedAlbums = normalizedSearchQuery ? searchableAlbums.slice(0, 5) : [];
 
     const openAlbum = (album: GalleryAlbum) => {
         setActiveAlbum(album);
@@ -172,12 +181,55 @@ export default function Galeri() {
             <main className="bg-white">
                 <section className="overflow-x-hidden px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
                     <div className="mx-auto max-w-7xl">
-                        <div className="mb-8">
+                        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                             <h1 className="text-4xl font-bold leading-tight text-zinc-950 sm:text-5xl">Galeri</h1>
+
+                            <div className="relative sm:w-full sm:max-w-sm">
+                                <div className="flex items-center rounded-full border border-zinc-300 bg-white px-4">
+                                    <Search className="size-4 shrink-0 text-zinc-400" />
+                                    <input
+                                        className="min-h-12 w-full bg-transparent px-3 text-sm text-zinc-950 outline-none placeholder:text-zinc-400"
+                                        onBlur={() => {
+                                            window.setTimeout(() => setIsSuggestionOpen(false), 120);
+                                        }}
+                                        onChange={(event) => {
+                                            setSearchQuery(event.target.value);
+                                            setIsSuggestionOpen(true);
+                                        }}
+                                        onFocus={() => setIsSuggestionOpen(true)}
+                                        placeholder="Cari galeri foto"
+                                        type="text"
+                                        value={searchQuery}
+                                    />
+                                </div>
+
+                                {isSuggestionOpen && normalizedSearchQuery ? (
+                                    <div className="absolute right-0 top-full z-10 mt-2 max-h-80 w-full overflow-y-auto rounded-xs border border-zinc-200 bg-white shadow-sm">
+                                        {suggestedAlbums.length > 0 ? (
+                                            suggestedAlbums.map((album) => (
+                                                <button
+                                                    className="block w-full border-b border-zinc-100 px-4 py-3 text-left last:border-b-0 hover:bg-zinc-50"
+                                                    key={`suggestion-${album.slug}`}
+                                                    onClick={() => {
+                                                        setSearchQuery(album.title);
+                                                        setIsSuggestionOpen(false);
+                                                    }}
+                                                    type="button"
+                                                >
+                                                    <p className="text-sm font-semibold text-zinc-950">{album.title}</p>
+                                                    <p className="mt-1 text-xs text-zinc-500">{album.place}</p>
+                                                </button>
+                                            ))
+                                        ) : (
+                                            <p className="px-4 py-3 text-sm text-zinc-500">Tidak ada hasil</p>
+                                        )}
+                                    </div>
+                                ) : null}
+                            </div>
                         </div>
 
                         <div className="columns-1 gap-6 sm:columns-2 lg:columns-4 lg:gap-8">
-                            {displayedAlbums.map((album, index) => {
+                            {searchableAlbums.map((album, index) => {
                                 const heightClass = cardHeights[index % cardHeights.length];
                                 const stackCount = album.kind === 'group' ? Math.min(album.images.length, 3) : 1;
 
@@ -199,8 +251,8 @@ export default function Galeri() {
                                                     <img alt="" className="h-full w-full object-cover opacity-65" loading="lazy" src={album.images[2] ?? album.images[1] ?? album.images[0]} />
                                                 </div>
                                             ) : null}
-                                            <div className={`relative ${heightClass} overflow-hidden rounded-xl border border-zinc-200 bg-zinc-950 transition group-hover:border-brand-yellow group-hover:shadow-xl`}>
-                                                <img alt="" className="h-full w-full object-cover opacity-90 transition duration-500 group-hover:scale-105" loading="lazy" src={album.images[0]} />
+                                            <div className={`relative ${heightClass} overflow-hidden rounded-xl border border-zinc-200 bg-zinc-950 transition group-hover:border-brand-yellow group-hover:shadow-xl group-hover:-rotate-2`}>
+                                                <img alt="" className="h-full w-full object-cover opacity-90 transition duration-500" loading="lazy" src={album.images[0]} />
                                                 <div className="absolute inset-0 bg-linear-to-t from-zinc-950 via-zinc-950/25 to-transparent" />
                                                 {album.kind === 'group' ? (
                                                     <div className="absolute left-0 top-0 rounded-br-xl bg-white px-3 py-2 text-xs font-semibold text-zinc-950">
@@ -209,7 +261,7 @@ export default function Galeri() {
                                                 ) : null}
                                                 <div className="absolute inset-x-0 bottom-0 p-5 text-white">
                                                     <p className="text-xs text-white/65">{album.date} | {album.place}</p>
-                                                    <h2 className="mt-2 text-2xl font-bold leading-tight">{album.title}</h2>
+                                                    <h2 className="mt-2 line-clamp-2 text-xl font-bold leading-tight">{album.title}</h2>
                                                 </div>
                                             </div>
                                         </article>

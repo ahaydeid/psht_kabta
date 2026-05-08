@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Head, Link } from '@inertiajs/react';
-import { ArrowRight, ChevronLeft, ChevronRight, Clock3, User2 } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight, Clock3, Search, User2 } from 'lucide-react';
 
 import { PublicLayout } from './components/layout/PublicLayout';
 import { newsArticles } from './data/newsArticles';
@@ -12,9 +12,18 @@ const articlesPerLoad = 6;
 export default function Berita() {
     const [activeIndex, setActiveIndex] = useState(0);
     const [visibleArticleCount, setVisibleArticleCount] = useState(articlesPerLoad);
-    const visibleArticles = articleList.slice(0, visibleArticleCount);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [isSuggestionOpen, setIsSuggestionOpen] = useState(false);
+    const normalizedSearchQuery = searchQuery.trim().toLowerCase();
+    const filteredArticles = articleList.filter((article) => {
+        const haystack = `${article.title} ${article.author} ${article.ranting} ${article.category} ${article.date}`.toLowerCase();
+
+        return haystack.includes(normalizedSearchQuery);
+    });
+    const suggestedArticles = normalizedSearchQuery ? filteredArticles.slice(0, 5) : [];
+    const visibleArticles = filteredArticles.slice(0, visibleArticleCount);
     const canShowPreviousArticles = visibleArticleCount > articlesPerLoad;
-    const canShowNextArticles = visibleArticleCount < articleList.length;
+    const canShowNextArticles = visibleArticleCount < filteredArticles.length;
 
     const moveCarousel = (direction: 'next' | 'previous') => {
         setActiveIndex((currentIndex) => {
@@ -119,6 +128,53 @@ export default function Berita() {
                     </div>
 
                     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+                        <div className="flex justify-end">
+                            <div className="relative w-full max-w-sm">
+                                <div className="flex items-center rounded-full border border-zinc-300 bg-white px-4">
+                                    <Search className="size-4 shrink-0 text-zinc-400" />
+                                    <input
+                                        className="min-h-12 w-full bg-transparent px-3 text-sm text-zinc-950 outline-none placeholder:text-zinc-400"
+                                        onBlur={() => {
+                                            window.setTimeout(() => setIsSuggestionOpen(false), 120);
+                                        }}
+                                        onChange={(event) => {
+                                            setSearchQuery(event.target.value);
+                                            setIsSuggestionOpen(true);
+                                            setVisibleArticleCount(articlesPerLoad);
+                                        }}
+                                        onFocus={() => setIsSuggestionOpen(true)}
+                                        placeholder="Cari berita"
+                                        type="text"
+                                        value={searchQuery}
+                                    />
+                                </div>
+
+                                {isSuggestionOpen && normalizedSearchQuery ? (
+                                    <div className="absolute right-0 top-full z-10 mt-2 max-h-80 w-full overflow-y-auto rounded-xs border border-zinc-200 bg-white shadow-sm">
+                                        {suggestedArticles.length > 0 ? (
+                                            suggestedArticles.map((article) => (
+                                                <button
+                                                    className="block w-full border-b border-zinc-100 px-4 py-3 text-left last:border-b-0 hover:bg-zinc-50"
+                                                    key={`suggestion-${article.slug}`}
+                                                    onClick={() => {
+                                                        setSearchQuery(article.title);
+                                                        setIsSuggestionOpen(false);
+                                                        setVisibleArticleCount(articlesPerLoad);
+                                                    }}
+                                                    type="button"
+                                                >
+                                                    <p className="text-sm font-semibold text-zinc-950">{article.title}</p>
+                                                    <p className="mt-1 text-xs text-zinc-500">{article.ranting}</p>
+                                                </button>
+                                            ))
+                                        ) : (
+                                            <p className="px-4 py-3 text-sm text-zinc-500">Tidak ada hasil</p>
+                                        )}
+                                    </div>
+                                ) : null}
+                            </div>
+                        </div>
+
                         <div className="mt-8 gap-8 lg:flex lg:items-start">
                             <div className="min-w-0 flex-1">
                                 <div className="columns-1 gap-5 md:columns-2">
