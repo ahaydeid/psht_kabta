@@ -83,6 +83,18 @@ Route::middleware('auth')->group(function () {
         ]);
     })->name('admin.dashboard.scope');
 
+    Route::get('/admin/cms/blog-tulisan', function () {
+        return Inertia::render('Admin/CMS/BlogTulisan/Index');
+    })->name('admin.cms.blog-tulisan');
+
+    Route::get('/admin/cms/galeri', function () {
+        return Inertia::render('Admin/CMS/Galeri/Index');
+    })->name('admin.cms.galeri');
+
+    Route::get('/admin/cms/kontributor', function () {
+        return Inertia::render('Admin/CMS/Kontributor/Index');
+    })->name('admin.cms.kontributor');
+
     Route::get('/admin/master-data/siswa', [StudentController::class, 'index'])->name('admin.master-data.siswa');
     Route::post('/admin/master-data/siswa', [StudentController::class, 'store'])->name('admin.master-data.siswa.store');
     Route::get('/admin/master-data/siswa/{student}', [StudentController::class, 'show'])->name('admin.master-data.siswa.show');

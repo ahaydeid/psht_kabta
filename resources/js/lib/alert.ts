@@ -16,21 +16,22 @@ type ToastOptions = {
 
 const brandButtons = {
     cancelButtonColor: '#e4e4e7',
+    confirmButtonColor: '#facc15',
 };
 
 const confirmButtonColors = {
-    danger: '#dc2626',
-    info: '#0284c7',
-    primary: '#facc15',
-    success: '#059669',
-    warning: '#facc15',
+    danger: brandButtons.confirmButtonColor,
+    info: brandButtons.confirmButtonColor,
+    primary: brandButtons.confirmButtonColor,
+    success: brandButtons.confirmButtonColor,
+    warning: brandButtons.confirmButtonColor,
 };
 
 const confirmButtonClasses = {
-    danger: 'text-white!',
-    info: 'text-white!',
+    danger: 'text-brand-black!',
+    info: 'text-brand-black!',
     primary: 'text-brand-black!',
-    success: 'text-white!',
+    success: 'text-brand-black!',
     warning: 'text-brand-black!',
 };
 
@@ -63,10 +64,10 @@ export function showToast({ title, icon = 'success' }: ToastOptions) {
         icon,
         timer: icon === 'success' ? 1800 : undefined,
         timerProgressBar: icon === 'success',
-        confirmButtonColor: icon === 'success' ? confirmButtonColors.success : confirmButtonColors.primary,
+        confirmButtonColor: brandButtons.confirmButtonColor,
         customClass: {
             title: alertTitleClassName,
-            confirmButton: icon === 'success' ? 'text-white!' : 'text-brand-black!',
+            confirmButton: 'text-brand-black!',
         },
     });
 }

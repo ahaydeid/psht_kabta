@@ -1,8 +1,11 @@
 import {
     Building2,
     CalendarCheck,
+    Images,
     LayoutDashboard,
+    Newspaper,
     Settings,
+    UserPen,
     UserRoundCheck,
     UserCog,
     UsersRound,
@@ -15,6 +18,27 @@ export const adminMenu: MenuItem[] = [
         name: 'Dashboard',
         icon: LayoutDashboard,
         path: '/admin/dashboard',
+    },
+    {
+        name: 'CMS',
+        section: 'CMS',
+        children: [
+            {
+                name: 'Blog & Tulisan',
+                path: '/admin/cms/blog-tulisan',
+                icon: Newspaper,
+            },
+            {
+                name: 'Galeri',
+                path: '/admin/cms/galeri',
+                icon: Images,
+            },
+            {
+                name: 'Kontributor',
+                path: '/admin/cms/kontributor',
+                icon: UserPen,
+            },
+        ],
     },
     {
         name: 'Master Data',

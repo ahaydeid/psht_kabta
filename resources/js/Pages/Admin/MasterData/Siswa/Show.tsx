@@ -187,11 +187,11 @@ export default function AdminMasterDataSiswaShow({
             confirmButtonText: "Ya, hapus",
             cancelButtonText: "Batal",
             reverseButtons: true,
-            confirmButtonColor: "#dc2626",
+            confirmButtonColor: "#facc15",
             cancelButtonColor: "#e4e4e7",
             customClass: {
                 title: "text-2xl!",
-                confirmButton: "text-white!",
+                confirmButton: "text-brand-black!",
                 cancelButton: "text-zinc-700!",
                 input: "rounded! border! border-zinc-300! px-3! py-2! text-sm! text-zinc-800! focus:border-brand-yellow-dark! focus:ring-1! focus:ring-brand-yellow/30!",
                 inputLabel: "text-sm! font-medium! text-zinc-700!",
