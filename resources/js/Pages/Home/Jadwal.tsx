@@ -96,9 +96,18 @@ function buildGoogleMapsUrl(latitude: number, longitude: number) {
     return `https://www.google.com/maps?q=${latitude},${longitude}`;
 }
 
+function splitScheduleDays(day: string) {
+    return day
+        .replace(/\s+dan\s+/gi, ', ')
+        .split(',')
+        .map((scheduleDay) => scheduleDay.trim())
+        .filter(Boolean);
+}
+
 export default function Jadwal() {
     const [selectedLocationId, setSelectedLocationId] = useState(scheduleLocations[0].id);
     const selectedLocation = scheduleLocations.find((location) => location.id === selectedLocationId) ?? scheduleLocations[0];
+    const selectedScheduleDays = splitScheduleDays(selectedLocation.day);
 
     return (
         <PublicLayout>
@@ -132,10 +141,14 @@ export default function Jadwal() {
                                             <Clock3 className="size-5" />
                                         </div>
                                         <div>
-                                            <p className="text-sm font-semibold text-zinc-950">Hari dan jam latihan</p>
+                                            <p className="text-sm font-semibold text-zinc-950">Hari dan jam</p>
                                             <div className="mt-2 grid grid-cols-2 gap-x-6 gap-y-1 text-sm leading-7 text-zinc-600">
-                                                <p className="pr-4">{selectedLocation.day}</p>
-                                                <p className="text-right">{selectedLocation.time}</p>
+                                                {selectedScheduleDays.map((scheduleDay) => (
+                                                    <div className="contents" key={scheduleDay}>
+                                                        <p className="pr-4">{scheduleDay}</p>
+                                                        <p className="text-right">{selectedLocation.time}</p>
+                                                    </div>
+                                                ))}
                                             </div>
                                         </div>
                                     </div>

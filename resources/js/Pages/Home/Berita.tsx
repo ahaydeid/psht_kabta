@@ -109,7 +109,7 @@ export default function Berita() {
                             <div className="absolute right-0 hidden shrink-0 gap-2 sm:flex">
                                 <button
                                     aria-label="Berita sebelumnya"
-                                    className="inline-flex size-10 items-center justify-center border border-white/20 text-white transition hover:border-brand-yellow hover:text-brand-yellow"
+                                    className="inline-flex size-10 rounded-full items-center justify-center border border-white/20 text-white transition hover:border-brand-yellow hover:text-brand-yellow"
                                     onClick={() => moveCarousel('previous')}
                                     type="button"
                                 >
@@ -117,7 +117,7 @@ export default function Berita() {
                                 </button>
                                 <button
                                     aria-label="Berita berikutnya"
-                                    className="inline-flex size-10 items-center justify-center border border-white/20 text-white transition hover:border-brand-yellow hover:text-brand-yellow"
+                                    className="inline-flex size-10 rounded-full items-center justify-center border border-white/20 text-white transition hover:border-brand-yellow hover:text-brand-yellow"
                                     onClick={() => moveCarousel('next')}
                                     type="button"
                                 >
