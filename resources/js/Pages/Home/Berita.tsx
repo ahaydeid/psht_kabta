@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Head, Link } from '@inertiajs/react';
-import { ArrowRight, ChevronLeft, ChevronRight, Clock3, Search, User2 } from 'lucide-react';
+import { ArrowRight, ChevronDown, ChevronLeft, ChevronRight, Clock3, Search, User2 } from 'lucide-react';
 
 import { PublicLayout } from './components/layout/PublicLayout';
 import { newsArticles } from './data/newsArticles';
 
 const articleList = newsArticles;
+const allCategoryLabel = 'Semua';
 const categories = Array.from(new Set(newsArticles.map((article) => article.category)));
 const articlesPerLoad = 6;
 
@@ -13,12 +14,14 @@ export default function Berita() {
     const [activeIndex, setActiveIndex] = useState(0);
     const [visibleArticleCount, setVisibleArticleCount] = useState(articlesPerLoad);
     const [searchQuery, setSearchQuery] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState(allCategoryLabel);
     const [isSuggestionOpen, setIsSuggestionOpen] = useState(false);
     const normalizedSearchQuery = searchQuery.trim().toLowerCase();
     const filteredArticles = articleList.filter((article) => {
         const haystack = `${article.title} ${article.author} ${article.ranting} ${article.category} ${article.date}`.toLowerCase();
+        const matchesCategory = selectedCategory === allCategoryLabel || article.category === selectedCategory;
 
-        return haystack.includes(normalizedSearchQuery);
+        return matchesCategory && haystack.includes(normalizedSearchQuery);
     });
     const suggestedArticles = normalizedSearchQuery ? filteredArticles.slice(0, 5) : [];
     const visibleArticles = filteredArticles.slice(0, visibleArticleCount);
@@ -233,13 +236,32 @@ export default function Berita() {
                             <aside className="mt-8 border border-zinc-200 bg-white p-6 lg:sticky lg:top-24 lg:mt-0 lg:w-80 lg:shrink-0">
                                 <p className="text-sm font-bold text-zinc-950">Kategori</p>
                                 <div className="mt-5 flex flex-wrap gap-2">
-                                    {categories.map((category) => (
-                                        <span className="border border-zinc-200 px-3 py-2 text-xs font-semibold text-zinc-700" key={category}>
+                                    {[allCategoryLabel, ...categories].map((category) => (
+                                        <button
+                                            className={`rounded-full border px-3 py-2 text-xs font-semibold transition ${
+                                                selectedCategory === category
+                                                    ? 'border-brand-yellow bg-brand-yellow text-brand-black'
+                                                    : 'border-zinc-200 text-zinc-700 hover:border-brand-yellow hover:text-brand-yellow-dark'
+                                            }`}
+                                            key={category}
+                                            onClick={() => {
+                                                setSelectedCategory(category);
+                                                setVisibleArticleCount(articlesPerLoad);
+                                            }}
+                                            type="button"
+                                        >
                                             {category}
-                                        </span>
+                                        </button>
                                     ))}
                                 </div>
-                                <div className="mt-8 border-t border-zinc-200 pt-6">
+                                <button
+                                    className="mt-6 flex w-full flex-col items-center gap-1 text-xs font-normal text-zinc-500 transition hover:text-brand-yellow-dark"
+                                    type="button"
+                                >
+                                    <span>Kategori lainnya</span>
+                                    <ChevronDown className="size-4" />
+                                </button>
+                                <div className="mt-2 border-t border-zinc-200 pt-6">
                                     <p className="text-sm font-bold text-zinc-950">Terbaru</p>
                                     <div className="mt-4 space-y-4">
                                         {newsArticles.slice(0, 4).map((article) => (

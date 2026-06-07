@@ -197,14 +197,14 @@ export function HomeIntroSection() {
 
                         <div className="mt-7 flex flex-wrap gap-3">
                             <Link
-                                className="inline-flex min-h-10 items-center justify-center rounded-full bg-white px-5 text-sm font-semibold text-brand-black transition hover:bg-brand-yellow"
+                                className="inline-flex min-h-10 items-center justify-center rounded-full bg-white px-5 text-xs font-medium text-brand-black transition hover:bg-brand-yellow"
                                 href="/profil/tentang"
                             >
                                 Lihat Profil
                                 <ChevronRight className="ml-2 size-4" />
                             </Link>
                             <Link
-                                className="inline-flex min-h-10 items-center justify-center rounded-full border border-white/25 bg-white/10 px-5 text-sm font-semibold text-white transition hover:border-brand-yellow hover:text-brand-yellow"
+                                className="inline-flex min-h-10 items-center justify-center rounded-full border border-white/25 bg-white/10 px-5 text-xs font-medium text-white transition hover:border-brand-yellow hover:text-brand-yellow"
                                 href="/berita"
                             >
                                 Berita Terbaru

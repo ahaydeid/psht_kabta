@@ -4,9 +4,7 @@ import { organizationProfile } from '../../data/homeContent';
 import { publicNavigationItems } from '../../data/navigation';
 
 const legalItems = [
-    'AHU-0000000.AH.00.00 Tahun 2026',
-    'NIB 0000000000000',
-    'NPWP 00.000.000.0-000.000',
+    'AHU-00000',
 ];
 
 export function PublicFooter() {

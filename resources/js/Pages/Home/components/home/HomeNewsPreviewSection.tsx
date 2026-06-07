@@ -41,7 +41,7 @@ export function HomeNewsPreviewSection() {
                     <div className="relative z-10 border-y border-white/20 bg-brand-black/92 lg:-ml-6 lg:pl-6">
                         {pancaDasarItems.map((item, index) => (
                             <article className="grid gap-4 border-b border-white/15 py-6 last:border-b-0 sm:grid-cols-[5rem_1fr]" key={item.title}>
-                                <span className="font-mono text-xs font-bold text-white/35">0{index + 1}</span>
+                                <span className="font-bold text-white/35">0{index + 1}</span>
                                 <div>
                                     <h3 className="text-2xl font-bold text-white">{item.title}</h3>
                                     <p className="mt-3 max-w-2xl text-sm leading-7 text-white/65">{item.description}</p>
